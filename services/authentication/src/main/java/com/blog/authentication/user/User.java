@@ -6,13 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,7 +26,7 @@ import java.util.List;
 @Document
 public class User implements UserDetails {
     @Id
-    private Integer id;
+    private String id;
     private String firstname;
     private String lastname;
 
@@ -32,6 +35,12 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Role role;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime lastModifiedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
