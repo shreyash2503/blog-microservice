@@ -20,9 +20,10 @@ public class AuthenticationMapper {
                 .build();
     }
 
-    public AuthenticationResponse toAuthenticationResponse(String jwtToken) {
+    public AuthenticationResponse toAuthenticationResponse(String jwtToken, String refreshToken) {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 

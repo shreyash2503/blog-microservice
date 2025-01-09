@@ -37,6 +37,11 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
+    public String generateRefreshToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
+
+    }
+
     public String generateToken(Map<String, Object> extractClaims, UserDetails userDetails) {
         return Jwts
                 .builder()

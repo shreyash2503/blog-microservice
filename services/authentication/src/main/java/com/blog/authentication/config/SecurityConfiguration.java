@@ -1,5 +1,6 @@
 package com.blog.authentication.config;
 
+import com.blog.authentication.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
