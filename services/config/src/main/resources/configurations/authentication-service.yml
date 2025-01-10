@@ -10,3 +10,9 @@ spring:
       password: yash1234
       port: 27017
       username: yash
+
+jwt:
+  token:
+    expiration: 604800
+  refreshToken:
+    expiration: 2592000
