@@ -19,6 +19,7 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
+
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
@@ -32,6 +33,12 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider)
+                /*
+                If your JwtAuthenticationFilter successfully authenticates the request
+                 by validating the JWT and setting the Authentication in the SecurityContext, the subsequent filters
+                 (like UsernamePasswordAuthenticationFilter) will skip their authentication logic because the
+                 user is already authenticated.
+                 */
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
