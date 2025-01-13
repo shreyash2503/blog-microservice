@@ -29,9 +29,6 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request
     ) throws AuthenticationException {
         return ResponseEntity.ok(authenticationService.authenticate(request));
-
-
-
     }
 
 
