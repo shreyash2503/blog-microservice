@@ -11,6 +11,7 @@ spring:
       port: 27017
       username: yash
 
+
 jwt:
   token:
     expiration: 604800

@@ -2,6 +2,8 @@ package com.blog.authentication.auth;
 
 import com.blog.authentication.config.JwtService;
 import com.blog.authentication.exceptions.UserNotFoundException;
+import com.blog.authentication.kafka.AccountCreationConfirmation;
+import com.blog.authentication.kafka.AccountCreationConfirmationCreator;
 import com.blog.authentication.token.Token;
 import com.blog.authentication.token.TokenRepository;
 import com.blog.authentication.user.User;
@@ -24,6 +26,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final AuthenticationMapper authenticationMapper;
     private final TokenRepository tokenrepository;
+    private final AccountCreationConfirmationCreator accountCreationConfirmationCreator;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = authenticationMapper.toUser(request);
@@ -31,6 +34,13 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveToken(user, jwtToken);
+        AccountCreationConfirmation accountCreationConfirmation = new AccountCreationConfirmation(
+                user.getUsername(),
+                user.getCreatedAt(),
+                user.getFirstname(),
+                user.getLastname()
+        );
+        accountCreationConfirmationCreator.sendAccountCreationConfirmation(accountCreationConfirmation);
         return authenticationMapper.toAuthenticationResponse(jwtToken, refreshToken);
     }
 
