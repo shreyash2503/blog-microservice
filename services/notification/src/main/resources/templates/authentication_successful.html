@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #4caf50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            color: #333333;
+            line-height: 1.5;
+        }
+        .footer {
+            background-color: #eeeeee;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #777777;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Welcome to Our Platform!</h1>
+    </div>
+    <div class="content">
+        <p>Dear <span th:text="${firstname} + ' ' + ${lastname}">User</span>,</p>
+        <p>
+            Congratulations! Your account has been successfully created. We are thrilled to have you on board.
+        </p>
+        <p>
+            Below are your account details for your reference:
+        </p>
+        <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+            <tr>
+                <td style="padding: 10px; font-weight: bold;">Username:</td>
+                <td style="padding: 10px;" th:text="${username}">username</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; font-weight: bold;">Account Created On:</td>
+                <td style="padding: 10px;" th:text="${createdAt}">2025-01-15T10:00</td>
+            </tr>
+        </table>
+        <p>
+            We hope you enjoy your experience with us. Feel free to explore all the features and services we have to offer.
+        </p>
+        <a href="#" class="button">Get Started</a>
+        <p style="margin-top: 20px;">
+            If you have any questions or need assistance, don’t hesitate to reach out to us.
+        </p>
+        <p>
+            Welcome aboard!
+        </p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 Your Company. All Rights Reserved.</p>
+    </div>
+</div>
+</body>
+</html>
+

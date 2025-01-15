@@ -1,0 +1,19 @@
+spring:
+  mail:
+    host: localhost
+    port: 1025
+    username: yash
+    password: yash1234
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enabled: true
+        timeout: 5000
+        connectiontimeout: 5000
+        writetimeout: 5000
+
+  server:
+    port: 8040

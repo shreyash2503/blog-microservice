@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: notification-service
+  mail:
+    host: localhost
+    port: 1025
+    username: yash
+    password: yash1234
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enabled: true
+        timeout: 5000
+        connectiontimeout: 5000
+        writetimeout: 5000
+  config:
+    import: optional:configserver:http://localhost:8888
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: authenticationGroup
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: "accountCreationConfirmation:com.blog.notification.kafka.auth.AccountCreationConfirmation"
