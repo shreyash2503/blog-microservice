@@ -16,6 +16,7 @@ spring:
       database-platform: org.hibernate.dialect.PostgreSQLDialect
       hibernate:
         ddl-auto: validate
-  server:
-    port: 8050
+
+server:
+  port: 8050
 
