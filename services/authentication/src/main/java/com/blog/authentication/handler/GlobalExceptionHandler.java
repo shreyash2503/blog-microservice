@@ -1,6 +1,7 @@
 package com.blog.authentication.handler;
 
 import com.blog.authentication.exceptions.UserNotFoundException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handle(UserNotFoundException exp) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exp.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exp.getMsg());
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<String> handle(AuthenticationException exp) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication Failed: " + exp.getMessage());
 
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<String> handle(ExpiredJwtException exp) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication Failed:: " + exp.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
