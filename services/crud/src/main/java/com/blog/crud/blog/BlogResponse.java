@@ -1,5 +1,12 @@
 package com.blog.crud.blog;
 
-public record BlogResponse() {
+import com.blog.crud.category.Category;
 
+public record BlogResponse(
+        String id,
+        String title,
+        String author,
+        String content,
+        Category categoryId
+) {
 }

@@ -3,6 +3,7 @@ package com.blog.crud.blog;
 import jakarta.validation.constraints.NotNull;
 
 public record BlogRequest(
+        Integer id,
         @NotNull(message = "The title of the blog cannot be empty")
         String title,
         @NotNull(message = "The author of a blog cannot be empty")

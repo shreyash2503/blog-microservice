@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -14,10 +15,11 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "blog_seq")
-    @SequenceGenerator(name = "product_seq", sequenceName = "blog_sequence", allocationSize = 50)
+    @SequenceGenerator(name = "blog_seq", sequenceName = "blog_sequence", allocationSize = 50)
     private Integer id;
 
     @Column(nullable = false, length = 100)
@@ -25,7 +27,6 @@ public class Blog {
 
     private String author;
 
-    @Lob
     @Column(nullable = false)
     private String content;
 
