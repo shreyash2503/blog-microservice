@@ -32,7 +32,7 @@ public class BlogService {
     public void updateBlog(BlogRequest blogRequest) {
         var category = categoryRepository.findById(Integer.valueOf(blogRequest.categoryId()))
                 .orElseThrow(() -> new RuntimeException("Category does not exists"));
-        var blog = blogRepository.findById(blogRequest.id())
+        var blog = blogRepository.findById(encryptor.decodeId(blogRequest.id()))
                 .orElseThrow(() -> new RuntimeException("Blog does not exist"));
         mergeBlog(blog, blogRequest);
         blogRepository.save(blog);

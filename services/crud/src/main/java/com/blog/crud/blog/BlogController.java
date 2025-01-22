@@ -16,9 +16,6 @@ public class BlogController {
         return ResponseEntity.ok(blogService.getBlog(id));
     }
 
-
-
-
     @PostMapping
     public ResponseEntity<String> createBlog(@RequestBody BlogRequest blogRequest) {
         return ResponseEntity.ok(blogService.createBlog(blogRequest));

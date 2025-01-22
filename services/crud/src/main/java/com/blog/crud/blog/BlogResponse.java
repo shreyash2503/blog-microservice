@@ -7,6 +7,6 @@ public record BlogResponse(
         String title,
         String author,
         String content,
-        Category categoryId
+        Integer categoryId
 ) {
 }

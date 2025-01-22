@@ -23,7 +23,7 @@ public class BlogMapper {
                 blog.getTitle(),
                 blog.getAuthor(),
                 blog.getContent(),
-                blog.getCategory()
+                blog.getCategory().getId()
         );
 
     }
