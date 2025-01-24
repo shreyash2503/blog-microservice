@@ -1,10 +1,11 @@
 package com.blog.crud.likes;
 
-import com.blog.crud.blog.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LikesRepository extends JpaRepository<Like, Integer> {
-    Optional<Like> findByUserIdAndBlog(String userId, Blog blog);
+    Optional<Like> findByUserIdAndBlog_Id(String userId, Integer id);
+    long countLikesByLikeTypeAndBlog_Id(LikeType likeType, Integer blogId);
 }

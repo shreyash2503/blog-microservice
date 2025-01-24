@@ -2,10 +2,7 @@ package com.blog.crud.likes;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,6 +20,17 @@ public class LikesController {
     public ResponseEntity<Void> decrementLike(@RequestBody LikesRequest likesRequest) {
         likesService.updateLikes(likesRequest, LikeType.DISLIKE);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/positive/{blogId}")
+    public ResponseEntity<LikesResponse> getLikes(@PathVariable("blogId") String blogId) {
+        return ResponseEntity.ok(likesService.getLikes(blogId, LikeType.LIKE));
+    }
+
+    @GetMapping("/negative/{blogId}")
+    public ResponseEntity<LikesResponse> getDisLikes(@PathVariable("blogId") String blogId) {
+        return ResponseEntity.ok(likesService.getLikes(blogId, LikeType.DISLIKE));
+
     }
 
 }

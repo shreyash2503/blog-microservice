@@ -23,6 +23,7 @@ public class BlogController {
 
     @PutMapping
     public ResponseEntity<Void> updateBlog(@RequestBody BlogRequest blogRequest) {
+        // TODO: Check if the same user is updating the blog
         if (blogRequest.id() == null) {
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -32,12 +33,14 @@ public class BlogController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBlog(@PathVariable("id") String id) {
+        // TODO: Check if it is same user that is deleting the blog
         if (id == null) {
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         blogService.deleteBlog(id);
         return ResponseEntity.accepted().build();
     }
+    //TODO: Add get blogs by category function and get all blogs functions (paginated)
 
 
 }

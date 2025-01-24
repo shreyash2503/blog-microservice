@@ -20,4 +20,9 @@ public class LikesMapper {
                 .build();
 
     }
+
+    public LikesResponse toLikesResponse(long totalLikes) {
+        return new LikesResponse(totalLikes);
+
+    }
 }

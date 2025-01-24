@@ -12,6 +12,8 @@ import lombok.*;
 @Entity(name = "_like")
 public class Like {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "like_seq")
+    @SequenceGenerator(name = "like_seq", sequenceName = "like_sequence", allocationSize = 50)
     private Integer Id;
 
     @Enumerated(EnumType.STRING)
@@ -19,7 +21,7 @@ public class Like {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_id")
-    Blog blog;
+    private Blog blog;
 
-    String userId;
+    private String userId;
 }
