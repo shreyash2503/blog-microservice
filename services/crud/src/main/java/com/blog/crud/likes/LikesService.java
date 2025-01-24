@@ -6,6 +6,8 @@ import com.blog.crud.utils.Encryption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LikesService {
@@ -27,19 +29,26 @@ public class LikesService {
             likesRepository.save(existingLike);
         } else {
             var newLike = likesMapper.toLike(likesRequest, likeType);
-            System.out.println(newLike);
-            try {
-
-                likesRepository.save(newLike);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+            likesRepository.save(newLike);
         }
     }
 
     public LikesResponse getLikes(String blogId, LikeType likeType) {
         long count = likesRepository.countLikesByLikeTypeAndBlog_Id(likeType, encryptor.decodeId(blogId));
         return likesMapper.toLikesResponse(count);
+    }
+
+    public List<UserLikesResponse> getUserLikedBlogs(String userId) {
+        List<Like> list = likesRepository.findAllByLikeTypeAndUserIdOrderByCreatedAtDesc(LikeType.LIKE, userId);
+        return list
+                .stream()
+                .map(like -> {
+                    var blog = like.getBlog();
+                    return new UserLikesResponse(encryptor.encodeId(blog.getId()),
+                            blog.getTitle(),
+                            blog.getCategory().getName(),
+                            null);
+                }).toList();
     }
 
 }

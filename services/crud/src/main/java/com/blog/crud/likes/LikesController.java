@@ -1,8 +1,11 @@
 package com.blog.crud.likes;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,6 +34,13 @@ public class LikesController {
     public ResponseEntity<LikesResponse> getDisLikes(@PathVariable("blogId") String blogId) {
         return ResponseEntity.ok(likesService.getLikes(blogId, LikeType.DISLIKE));
 
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<UserLikesResponse>> getUserLikedBlog(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        System.out.println(username);
+        return ResponseEntity.ok(likesService.getUserLikedBlogs(username));
     }
 
 }
