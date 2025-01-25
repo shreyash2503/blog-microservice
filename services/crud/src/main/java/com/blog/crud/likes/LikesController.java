@@ -2,6 +2,7 @@ package com.blog.crud.likes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,12 @@ import java.util.List;
 @RequestMapping("/api/v1/blogs/likes")
 public class LikesController {
     private final LikesService likesService;
+
+    @GetMapping("/isLiked/{blogId}")
+    public ResponseEntity<Boolean> IsLiked(@PathVariable("blogId") String blogId, HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        return ResponseEntity.ok(likesService.isLiked(blogId, username));
+    }
 
     @PostMapping("/increment")
     public ResponseEntity<Void> incrementLikes(@RequestBody LikesRequest likesRequest) {
@@ -39,7 +46,6 @@ public class LikesController {
     @GetMapping("/user")
     public ResponseEntity<List<UserLikesResponse>> getUserLikedBlog(HttpServletRequest request) {
         String username = (String) request.getAttribute("username");
-        System.out.println(username);
         return ResponseEntity.ok(likesService.getUserLikedBlogs(username));
     }
 

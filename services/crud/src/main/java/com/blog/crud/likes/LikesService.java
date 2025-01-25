@@ -33,6 +33,11 @@ public class LikesService {
         }
     }
 
+    public Boolean isLiked(String blogId, String userId) {
+        var blog = likesRepository.findByUserIdAndBlog_Id(userId, encryptor.decodeId(blogId));
+        return blog.isPresent();
+    }
+
     public LikesResponse getLikes(String blogId, LikeType likeType) {
         long count = likesRepository.countLikesByLikeTypeAndBlog_Id(likeType, encryptor.decodeId(blogId));
         return likesMapper.toLikesResponse(count);

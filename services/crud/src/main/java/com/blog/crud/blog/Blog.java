@@ -1,6 +1,7 @@
 package com.blog.crud.blog;
 
 import com.blog.crud.category.Category;
+import com.blog.crud.comment.Comment;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,6 +9,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +36,9 @@ public class Blog {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "blog")
+    private List<Comment> comments;
 
     @CreatedDate
     private LocalDateTime createdAt;
