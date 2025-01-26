@@ -20,8 +20,15 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public List<Comment> getComments(String blogId) {
-        return commentRepository.findAllByBlog_Id(encryptor.decodeId(blogId));
+    public List<CommentResponse> getComments(String blogId) {
+        try {
+            List<Comment> comments = commentRepository.findAllByBlog_Id(encryptor.decodeId(blogId));
+            return comments.stream().map(commentMapper::toCommentResponse).toList();
+        } catch (Exception exp) {
+            System.out.println(exp);
+            throw exp;
+
+        }
     }
 
 }

@@ -22,4 +22,15 @@ public class CommentMapper {
                         .build())
                 .build();
     }
+
+    public CommentResponse toCommentResponse(Comment comment) {
+        return new CommentResponse(
+                encryptor.encodeId(comment.getBlog().getId()),
+                comment.getContent(),
+                comment.getParentComment() == null ? null : String.valueOf(comment.getParentComment().getId()),
+                comment.getCreatedAt(),
+                comment.getLastModifiedAt()
+        );
+
+    }
 }

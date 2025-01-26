@@ -22,7 +22,7 @@ public class CommentController {
     }
 
     @GetMapping("/{blogId}")
-    public ResponseEntity<List<Comment>> getComments(@PathVariable("blogId") String blogId) {
+    public ResponseEntity<List<CommentResponse>> getComments(@PathVariable("blogId") String blogId) {
         return ResponseEntity.ok(commentService.getComments(blogId));
     }
 
