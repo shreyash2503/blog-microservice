@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/blogs")
@@ -22,12 +24,13 @@ public class BlogController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateBlog(@RequestBody BlogRequest blogRequest) {
+    public ResponseEntity<Void> updateBlog(@RequestBody BlogRequest blogRequest, HttpServletRequest request) {
         // TODO: Check if the same user is updating the blog
         if (blogRequest.id() == null) {
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        blogService.updateBlog(blogRequest);
+        String username = (String) request.getAttribute("username");
+        blogService.updateBlog(blogRequest, username);
         return ResponseEntity.accepted().build();
     }
 

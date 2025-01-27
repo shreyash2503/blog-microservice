@@ -1,0 +1,46 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-ConfigApplication<config>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.blog.config_server.ConfigApplication",
+      "projectName": "config",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env",
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=65196 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=config"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-DiscoveryApplication<discovery>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.blog.discovery.DiscoveryApplication",
+      "projectName": "discovery",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env",
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=65238 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=discovery"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-AuthenticationApplication<authentication>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.blog.authentication.AuthenticationApplication",
+      "projectName": "authentication",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-CrudApplication<crud>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.blog.crud.CrudApplication",
+      "projectName": "crud",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

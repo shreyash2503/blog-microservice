@@ -32,6 +32,8 @@ public class Blog {
     @Column(nullable = false)
     private String content;
 
+    private boolean isPaid;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
