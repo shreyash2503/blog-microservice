@@ -25,7 +25,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final AuthenticationMapper authenticationMapper;
-    private final TokenRepository tokenrepository;
+    private final TokenRepository tokenRepository;
     private final AccountCreationConfirmationCreator accountCreationConfirmationCreator;
 
     public AuthenticationResponse register(RegisterRequest request) {
@@ -56,6 +56,7 @@ public class AuthenticationService {
                     .orElseThrow(() -> new UserNotFoundException("User does not exist"));
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
+            revokeAlluserTokens(user);
             saveToken(user, jwtToken);
             return authenticationMapper.toAuthenticationResponse(jwtToken, refreshToken);
         } catch (BadCredentialsException exp) {
@@ -72,6 +73,20 @@ public class AuthenticationService {
                 .revoked(false)
                 .user(user)
                 .build();
-        tokenrepository.save(token);
+        tokenRepository.save(token);
+    }
+
+    private void revokeAlluserTokens(User user) {
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        if (validUserTokens.isEmpty()) {
+            return;
+        }
+
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
+
     }
 }
