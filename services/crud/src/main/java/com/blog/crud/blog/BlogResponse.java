@@ -1,6 +1,5 @@
 package com.blog.crud.blog;
 
-import com.blog.crud.category.Category;
 
 public record BlogResponse(
         String id,

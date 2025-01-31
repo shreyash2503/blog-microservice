@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    username: yash
+    password: yash1234
+    url: jdbc:postgresql://localhost:5432/blog
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    baseline-description: "init"
+    baseline-on-migrate: true
+    baseline-version: 0
+    enabled: true
+    password: ${spring.datasource.password}
+    user: ${spring.datasource.username}
+    table: flyway_payment_schema_history
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+
+application:
+  config:
+    auth-url: http://localhost:8090/api/v1
+    crud-url: http://localhost:8050/api/v1
+
+
+logging:
+  level:
+    org.flyway.core: DEBUG
+
+server:
+  port: 9000
