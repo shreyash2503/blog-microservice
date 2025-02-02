@@ -2,6 +2,8 @@ package com.blog.payment.order;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.razorpay.Order;
 import com.razorpay.RazorpayException;
 
@@ -25,9 +27,9 @@ public class OrderCreationController {
     private final OrderCreationService orderCreationService;
 
     @PostMapping("/create-order")
-    public ResponseEntity<OrderCreationResponse> createOrder(@RequestBody OrderCreationRequest OrderCreationRequest) throws RazorpayException {
-        Order order = orderCreationService.createOrder(OrderCreationRequest);
-        return ResponseEntity.ok(new OrderCreationResponse(order.toString()));
+    public ResponseEntity<OrderCreationResponse> createOrder(@RequestBody OrderCreationRequest OrderCreationRequest) throws RazorpayException, JsonMappingException, JsonProcessingException {
+        String order = orderCreationService.createOrderId(OrderCreationRequest, "");
+        return ResponseEntity.ok(new OrderCreationResponse(order));
     }
 
     @PostMapping(value = "/capture-payment", consumes = {MediaType.APPLICATION_FORM_URLENCODED})
