@@ -45,7 +45,7 @@ var options = {
 };
 document.getElementById('rzp-button1').onclick = function(e){
     console.log(apiData);
-    options["order_id"] = JSON.parse(apiData.orderId).id
+    options["order_id"] = apiData.orderId
     var rzp1 = new Razorpay(options);
     console.log(options);
     rzp1.open();

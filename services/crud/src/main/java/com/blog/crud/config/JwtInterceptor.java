@@ -35,7 +35,7 @@ public class JwtInterceptor implements Filter {
                 httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
             }
         } else {
-            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, " Authorization header is missing or invalid");
+            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization header is missing or invalid");
         }
 
 
