@@ -16,8 +16,8 @@ public class PaymentController {
 
     @GetMapping("/get-subscription-status")
     public ResponseEntity<Boolean> getSubscriptionStatus(HttpServletRequest request) {
-        String usernmae = (String) request.getAttribute("username");
-        return ResponseEntity.ok(paymentService.getSubscriptionStatus(usernmae));
+        String username = (String) request.getAttribute("username");
+        return ResponseEntity.ok(paymentService.getSubscriptionStatus(username));
     }
     
 }

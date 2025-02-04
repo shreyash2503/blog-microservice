@@ -15,7 +15,6 @@ public class PaymentService {
     public Boolean getSubscriptionStatus(String username) {
         Payment payment = paymentRespository.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("User is not subscribed to any subscription"));
-
         return payment.getSubscriptionEndDate().isAfter(LocalDateTime.now());
     }
 

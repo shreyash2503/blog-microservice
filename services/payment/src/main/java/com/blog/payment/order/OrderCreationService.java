@@ -1,18 +1,16 @@
 package com.blog.payment.order;
 
-import org.antlr.v4.runtime.misc.MultiMap;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import com.blog.payment.payments.Payment;
-import com.blog.payment.payments.PaymentMethod;
 import com.blog.payment.payments.PaymentRespository;
-import com.blog.payment.payments.PaymentStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.razorpay.Order;
+import com.razorpay.PaymentClient;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import java.math.BigDecimal;
@@ -45,22 +43,30 @@ public class OrderCreationService {
 
     }
 
+    
 
-    public void savePayment(MultiMap<String, String> map) {
+
+    public String savePayment() throws RazorpayException {
       // Get the payment from the razorpay apis and get the corresponding username
-      String username = "";
-      String razorpayPaymentId = "";
-      String paymentDetails = "";
+      String keyId = "";
+      String keySecret = "";
+        
+        // Combine credentials in the format "keyId:keySecret"
+      RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
+      PaymentClient paymentClient = razorpayClient.payments;
+      var  payment = paymentClient.fetch("pay_PrhtodVu3c1qqi");
+      System.out.println(payment.toString());
+      return payment.toString();
 
-      Payment payment = paymentRepository.findByUsername(username)
-      .orElseThrow(() -> new RuntimeException("Unable to find the corresponding payment, please try again"));
+      // Payment payment = paymentRepository.findByUsername(username)
+      // .orElseThrow(() -> new RuntimeException("Unable to find the corresponding payment, please try again"));
 
-      payment.setRazorpayPaymentId(razorpayPaymentId);
-      payment.setPaymentMethod(PaymentMethod.UPI);
-      payment.setPaymentStatus(PaymentStatus.SUCCESS);
-      payment.setPaymentDetails(paymentDetails);
-      // payment.setSubscriptionEndDate();
-      paymentRepository.save(payment);
+      // payment.setRazorpayPaymentId(razorpayPaymentId);
+      // payment.setPaymentMethod(PaymentMethod.UPI);
+      // payment.setPaymentStatus(PaymentStatus.SUCCESS);
+      // payment.setPaymentDetails(paymentDetails);
+      // // payment.setSubscriptionEndDate();
+      // paymentRepository.save(payment);
       // Kafka Notify the user the payment status if successfull or not successfull
 
     }

@@ -9,7 +9,8 @@ async function fetchData () {
         const response = await fetch("http://localhost:9000/api/v1/payments/create-order", {
             headers : {
                 "Accept" : "application/json",
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaHJleWFzaHRla2FkZTI1MTJAZ21haWwuY29tIiwiaWF0IjoxNzM4NjcxMTI5LCJleHAiOjE3MzkyNzU5Mjl9.GKqmEMnCmMZ7ccoMq5_7NPZhKVfIQLpFacDHmrwPO5M"
                 
             },
             method : "POST",
@@ -30,7 +31,6 @@ var options = {
     "name": "Acme Corp",
     "description": "Test Transaction",
     "image": "https://example.com/your_logo",
-    "callback_url" : "http://localhost:9000/api/v1/payments/capture-payment",
     "prefill": {
         "name": "Gaurav Kumar",
         "email": "gaurav.kumar@example.com",
@@ -38,6 +38,17 @@ var options = {
     },
     "notes": {
         "address": "Razorpay Corporate Office"
+    },
+    "handler": async function (response){
+        var  request = await fetch("http://localhost:9000/api/v1/payments/capture-payment", {
+            method : "POST", 
+            headers : {
+                "accept" : "applicaiton/json",
+                "Content-Type" : "application/json",
+                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaHJleWFzaHRla2FkZTI1MTJAZ21haWwuY29tIiwiaWF0IjoxNzM4NjcxMTI5LCJleHAiOjE3MzkyNzU5Mjl9.GKqmEMnCmMZ7ccoMq5_7NPZhKVfIQLpFacDHmrwPO5M",
+            }, 
+            body : JSON.stringify({"razorpay_payment_id" : response.razorpay_payment_id, "razorpay_order_id" : response.razorpay_order_id, "razorpay_signature" : response.razorpay_signature})
+        }) 
     },
     "theme": {
         "color": "#3399cc"

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 
 @RequiredArgsConstructor
@@ -32,14 +34,17 @@ public class OrderCreationController {
         return ResponseEntity.ok(new OrderCreationResponse(order));
     }
 
-    @PostMapping(value = "/capture-payment", consumes = {MediaType.APPLICATION_FORM_URLENCODED})
-    public void capturePayment(@RequestParam MultiValueMap<String, String> paramMap) {
-        paramMap.forEach((key, value) -> {
-            System.out.println( key +  "->" + value);
-
-        });
-        // Extract the razorpay id details from the incoming request and save to the db
+    @PostMapping(value = "/capture-payment")
+    public void capturePayment(@RequestBody PaymentCaptureRequest paymentCaptureRequest) {
+        System.out.println(paymentCaptureRequest.getRazorpayOrderId());
+        System.out.println(paymentCaptureRequest.getRazorpayPaymentId());
+        System.out.println(paymentCaptureRequest.getRazorpaySignature());
 
     }
+    @GetMapping("/test")
+    public String test() throws RazorpayException {
+        return new String(orderCreationService.savePayment());
+    }
+    
 
 }
