@@ -1,4 +1,4 @@
-package com.blog.payment.order;
+package com.blog.payment.payments;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,8 +1,11 @@
 package com.blog.payment.payments;
 
 public enum PaymentMethod {
-    VISA, 
-    MASTERCARD,
+    CARD,
     UPI;
+
+    public static PaymentMethod fromSring(String text) throws IllegalArgumentException {
+        return PaymentMethod.valueOf(text.toUpperCase());
+    }
     
 }

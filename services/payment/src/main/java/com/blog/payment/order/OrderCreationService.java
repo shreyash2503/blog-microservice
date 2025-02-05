@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 
 import com.blog.payment.payments.Payment;
 import com.blog.payment.payments.PaymentRespository;
+import com.blog.payment.payments.PaymentStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.razorpay.Order;
-import com.razorpay.PaymentClient;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import java.math.BigDecimal;
@@ -23,7 +23,7 @@ public class OrderCreationService {
       private final PaymentRespository paymentRepository;
 
       public String createOrderId(OrderCreationRequest orderCreationRequest, String username) throws RazorpayException, JsonMappingException, JsonProcessingException {
-        RazorpayClient razorpayClient = new RazorpayClient("", "");
+        RazorpayClient razorpayClient = new RazorpayClient("rzp_test_mWDvyDcw88pXSA", "bVERrwOIJwgxTDbXl4AugAJc");
         JSONObject orderRequest = new JSONObject();
         orderRequest.put("currency", orderCreationRequest.currency());
         orderRequest.put("amount", orderCreationRequest.amount());
@@ -36,6 +36,7 @@ public class OrderCreationService {
         Payment payment = Payment.builder()
         .username(username)
         .paymentAmount(BigDecimal.valueOf(orderCreationRequest.amount() / 100))
+        .paymentStatus(PaymentStatus.PENDING)
         .orderId(orderId)
         .build();
         paymentRepository.save(payment);
@@ -46,30 +47,7 @@ public class OrderCreationService {
     
 
 
-    public String savePayment() throws RazorpayException {
-      // Get the payment from the razorpay apis and get the corresponding username
-      String keyId = "";
-      String keySecret = "";
-        
-        // Combine credentials in the format "keyId:keySecret"
-      RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
-      PaymentClient paymentClient = razorpayClient.payments;
-      var  payment = paymentClient.fetch("pay_PrhtodVu3c1qqi");
-      System.out.println(payment.toString());
-      return payment.toString();
-
-      // Payment payment = paymentRepository.findByUsername(username)
-      // .orElseThrow(() -> new RuntimeException("Unable to find the corresponding payment, please try again"));
-
-      // payment.setRazorpayPaymentId(razorpayPaymentId);
-      // payment.setPaymentMethod(PaymentMethod.UPI);
-      // payment.setPaymentStatus(PaymentStatus.SUCCESS);
-      // payment.setPaymentDetails(paymentDetails);
-      // // payment.setSubscriptionEndDate();
-      // paymentRepository.save(payment);
-      // Kafka Notify the user the payment status if successfull or not successfull
-
-    }
+    
 
 
     
