@@ -1,0 +1,16 @@
+{
+  "name": "resize-images",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "hono": "^4.6.20"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "@types/crypto-js": "^4.2.2",
+    "wrangler": "^3.101.0"
+  }
+}
