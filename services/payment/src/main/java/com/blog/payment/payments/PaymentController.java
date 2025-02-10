@@ -27,7 +27,7 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getSubscriptionStatus(username));
     }
 
-    @PostMapping(value = "/capture-payment")
+    @PostMapping("/capture-payment")
     public ResponseEntity<Void> capturePayment(@RequestBody PaymentCaptureRequest paymentCaptureRequest) throws JsonMappingException, JsonProcessingException, RazorpayException {
         paymentService.savePayment(paymentCaptureRequest);
         return ResponseEntity.ok().build();

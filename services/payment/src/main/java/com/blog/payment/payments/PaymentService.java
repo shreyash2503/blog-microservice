@@ -22,7 +22,7 @@ public class PaymentService {
     private final PaymentRespository paymentRepository;
 
     public Boolean getSubscriptionStatus(String username) {
-        Payment payment = paymentRepository.findByUsername(username)
+        Payment payment = paymentRepository.findTopByUsernameOrderByCreatedAtDesc(username)
         .orElseThrow(() -> new RuntimeException("User is not subscribed to any subscription"));
         return payment.getSubscriptionEndDate().isAfter(LocalDateTime.now());
     }
