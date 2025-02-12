@@ -59,7 +59,7 @@ export class AWSSignatureV4 {
         const fields = {
             'x-amz-algorithm': algorithm,
             'x-amz-credential': `${this.keyId}/${credentialScope}`,
-            'x-amx-date': amzDate,
+            'x-amz-date': amzDate,
             'x-amz-signature': signature,
             'policy': policyBase64
         }
