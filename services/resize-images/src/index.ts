@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { AWSSignatureV4 } from './aws-signature'
+import { compressImage } from './utils'
 
 
 const app = new Hono()
@@ -19,13 +20,28 @@ app.post('/upload-image', async (c) => {
       }, 400)
     }
 
+
+
     const AWS_REGION = (c.env as any).AWS_REGION as string
     const AWS_BUCKET_NAME = (c.env as any).AWS_BUCKET_NAME as string
     const AWS_KEY_ID = (c.env as any).AWS_KEY_ID as string
     const AWS_SECRET_KEY = (c.env as any).AWS_SECRET_KEY as string
 
-    const body = await c.req.parseBody(); 
-    const file = body.file as File;
+    const body = await c.req.formData()
+    const files = body.getAll('file')
+
+    if (files.length > 1) {
+      return c.json({
+        message: "Multiple files upload not allowewd"
+      }, 400)
+    }
+    const file = files[0] as File
+
+    if (file.type !== "image/png" && file.type !== "image/jpeg" && file.type !== "image/jpg") {
+      return c.json({
+        message : "Wrong file type"
+      }, 400)
+    }
 
     if (!AWS_REGION || !AWS_BUCKET_NAME || !AWS_KEY_ID || !AWS_SECRET_KEY) {
       return c.json({ error: 'Missing required environment variables' }, 400)
@@ -48,7 +64,9 @@ app.post('/upload-image', async (c) => {
       formData.append(key, value);
     })
     formData.append('key', fileName);
-    formData.append('file', file, fileName);
+    const compressedImageBuffer = await compressImage(file);
+    const compressedBlob = new Blob([compressedImageBuffer], { type: 'image/jpeg' });
+    formData.append('file', compressedBlob, fileName);
     const uploadResponse = await fetch(url, {
       method: "POST",
       body: formData
