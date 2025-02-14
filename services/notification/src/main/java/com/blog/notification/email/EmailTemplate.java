@@ -3,7 +3,8 @@ package com.blog.notification.email;
 import lombok.Getter;
 
 public enum EmailTemplate {
-    ACCOUNT_CREATION_SUCCESSFUL("authentication_successful.html", "Account created successfully");
+    ACCOUNT_CREATION_SUCCESSFUL("authentication_successful.html", "Account created successfully"),
+    PAYMENT_SUCCESSFULL("payment_successfull.html", "Payment done successfully");
 
    @Getter
     private final String template;

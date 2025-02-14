@@ -27,4 +27,4 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
-        spring.json.type.mapping: "accountCreationConfirmation:com.blog.notification.kafka.auth.AccountCreationConfirmation"
+        spring.json.type.mapping: "accountCreationConfirmation:com.blog.notification.kafka.auth.AccountCreationConfirmation,paymentStatusConfirmation:com.blog.notification.kafka.payment.PaymentStatusConfirmation"

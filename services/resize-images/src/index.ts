@@ -9,8 +9,6 @@ app.get('/', c => c.text("Image Resizer online, Upload images to resize and uplo
 
 app.post('/upload-image', async (c) => {
   try {
-    console.log(c)
-
     const contentType = c.req.header('content-type')
     console.log(contentType)
     if (!contentType?.includes('multipart/form-data')) {

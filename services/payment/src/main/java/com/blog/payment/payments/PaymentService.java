@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import com.blog.payment.kafka.PaymentStatusConfirmation;
+import com.blog.payment.kafka.PaymentStatusCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PaymentService {
     private final PaymentRespository paymentRepository;
+    private final PaymentStatusCreator paymentStatusCreator;
 
     public Boolean getSubscriptionStatus(String username) {
         Payment payment = paymentRepository.findTopByUsernameOrderByCreatedAtDesc(username)
@@ -52,7 +55,15 @@ public class PaymentService {
         payment.setPaymentDetails(paymentDetails.toString());
         payment.setSubscriptionEndDate(LocalDateTime.now().plusMonths(6));
         paymentRepository.save(payment);
+        System.out.println("I am here");
         // Send and email that the payment was successfull
+        try {
+            PaymentStatusConfirmation paymentStatusConfirmation = new PaymentStatusConfirmation(payment.getUsername(), "", payment.getPaymentAmount(), payment.getPaymentMethod().name());
+            paymentStatusCreator.sendPaymentStatus(paymentStatusConfirmation);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     

@@ -1,6 +1,7 @@
 package com.blog.notification.kafka;
 
 import com.blog.notification.kafka.auth.AccountCreationConfirmation;
+import com.blog.notification.kafka.payment.PaymentStatusConfirmation;
 import com.blog.notification.email.EmailService;
 import com.blog.notification.email.EmailTemplate;
 import jakarta.mail.MessagingException;
@@ -27,6 +28,16 @@ public class NotificationConsumer {
         map.put("firstname", accountCreationConfirmation.firstname());
         map.put("lastname", accountCreationConfirmation.lastname());
         emailService.sendEmail(accountCreationConfirmation.username(), map, EmailTemplate.ACCOUNT_CREATION_SUCCESSFUL);
+    }
 
+    @KafkaListener(topics = "payment-status")
+    public void consumePaymentStatusConfirmation(PaymentStatusConfirmation paymentStatusConfirmation) throws MessagingException {
+        log.info("Consuming the message from payment-status:: %s", paymentStatusConfirmation);
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", paymentStatusConfirmation.username());
+        map.put("description", paymentStatusConfirmation.description());
+        map.put("paymentAmount", paymentStatusConfirmation.paymentAmount());
+        map.put("paymentMethod", paymentStatusConfirmation.paymentMethod());
+        emailService.sendEmail(paymentStatusConfirmation.username(), map, EmailTemplate.PAYMENT_SUCCESSFULL);
     }
 }

@@ -34,6 +34,7 @@ public class JwtInterceptor implements Filter {
             try {
                 UserValidResponse validResponse = tokenClient.validateToken("Bearer " + jwtToken) .orElseThrow(() -> new RuntimeException("Not a valid token"));
                 if (validResponse.isValid()) {
+                    System.out.println("Token is valid");
                     request.setAttribute("username", validResponse.getUserId());
                     filterChain.doFilter(request, response);
                 } else {
