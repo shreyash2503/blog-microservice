@@ -29,6 +29,8 @@ logging:
     org.flyway.core: DEBUG
 
 razorpay:
+  keyId: rzp_test_mWDvyDcw88pXSA
+  secretKey: bVERrwOIJwgxTDbXl4AugAJc 
   payment: 
     url: https://api.razorpay.com/v1
 

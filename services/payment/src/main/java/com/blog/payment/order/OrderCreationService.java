@@ -1,6 +1,7 @@
 package com.blog.payment.order;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.blog.payment.payments.Payment;
@@ -22,8 +23,14 @@ import lombok.RequiredArgsConstructor;
 public class OrderCreationService {
       private final PaymentRespository paymentRepository;
 
+      @Value("${razorpay.keyId}")
+      private String keyId;
+
+      @Value("${razorpay.secretKey}")
+      private String secretKey;
+
       public String createOrderId(OrderCreationRequest orderCreationRequest, String username) throws RazorpayException, JsonMappingException, JsonProcessingException {
-        RazorpayClient razorpayClient = new RazorpayClient("rzp_test_mWDvyDcw88pXSA", "bVERrwOIJwgxTDbXl4AugAJc");
+        RazorpayClient razorpayClient = new RazorpayClient(keyId, secretKey);
         JSONObject orderRequest = new JSONObject();
         orderRequest.put("currency", orderCreationRequest.currency());
         orderRequest.put("amount", orderCreationRequest.amount());

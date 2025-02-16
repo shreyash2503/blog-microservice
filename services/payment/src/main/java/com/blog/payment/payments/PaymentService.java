@@ -1,10 +1,11 @@
 package com.blog.payment.payments;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.blog.payment.exceptions.PaymentNotValid;
 import com.blog.payment.kafka.PaymentStatusConfirmation;
 import com.blog.payment.kafka.PaymentStatusCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,20 +25,24 @@ public class PaymentService {
     private final PaymentRespository paymentRepository;
     private final PaymentStatusCreator paymentStatusCreator;
 
+    @Value("${razorpay.keyId}")
+    private String keyId;
+
+    @Value("${razorpay.secretKey}")
+    private String secretKey;
+
     public Boolean getSubscriptionStatus(String username) {
         Payment payment = paymentRepository.findTopByUsernameOrderByCreatedAtDesc(username)
-        .orElseThrow(() -> new RuntimeException("User is not subscribed to any subscription"));
-        return payment.getSubscriptionEndDate().isAfter(LocalDateTime.now());
+        .orElse(null);
+        return payment == null ? false : payment.getSubscriptionEndDate().isAfter(LocalDateTime.now());
     }
 
     public void savePayment(PaymentCaptureRequest paymentCaptureRequest) throws RazorpayException, JsonMappingException, JsonProcessingException {
       // Get the payment from the razorpay apis and get the corresponding username
-        String keyId = "rzp_test_mWDvyDcw88pXSA";
-        String keySecret = "bVERrwOIJwgxTDbXl4AugAJc";
         ObjectMapper objectMapper = new ObjectMapper();
         
         // Combine credentials in the format "keyId:keySecret"
-        RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
+        RazorpayClient razorpayClient = new RazorpayClient(keyId, secretKey);
         PaymentClient paymentClient = razorpayClient.payments;
         var paymentDetails = paymentClient.fetch(paymentCaptureRequest.getRazorpayPaymentId());
 
@@ -46,7 +51,7 @@ public class PaymentService {
         String orderId = mainNode.get("order_id").asText();
         String paymentMethod = mainNode.get("method").asText();
         var payment = paymentRepository.findByOrderId(orderId)
-            .orElseThrow(() -> new RuntimeException("Invalid payment")); 
+            .orElseThrow(() -> new PaymentNotValid("The payment is no longer valid")); 
 
         payment.setRazorpayPaymentId(paymentCaptureRequest.getRazorpayPaymentId());
         // Handle IllegalArgumentException here for paymentMethod
@@ -55,15 +60,9 @@ public class PaymentService {
         payment.setPaymentDetails(paymentDetails.toString());
         payment.setSubscriptionEndDate(LocalDateTime.now().plusMonths(6));
         paymentRepository.save(payment);
-        System.out.println("I am here");
         // Send and email that the payment was successfull
-        try {
-            PaymentStatusConfirmation paymentStatusConfirmation = new PaymentStatusConfirmation(payment.getUsername(), "", payment.getPaymentAmount(), payment.getPaymentMethod().name());
-            paymentStatusCreator.sendPaymentStatus(paymentStatusConfirmation);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
+        PaymentStatusConfirmation paymentStatusConfirmation = new PaymentStatusConfirmation(payment.getUsername(), "", payment.getPaymentAmount(), payment.getPaymentMethod().name());
+        paymentStatusCreator.sendPaymentStatus(paymentStatusConfirmation);
     }
 
     
