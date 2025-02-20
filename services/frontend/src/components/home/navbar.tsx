@@ -8,6 +8,7 @@ import {
 } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
+import { ModeToggle } from "./theme-toggle";
 
 export default function Navbar() {
   return (
@@ -21,6 +22,7 @@ export default function Navbar() {
         <Link href="https://github.com/shreyash2503">Github</Link>
         <Link href="https://github.com/shreyash2503">Github</Link>
         <Link href="https://github.com/shreyash2503">Github</Link>
+        <ModeToggle />
       </div>
 
       {/* Mobile Navigation */}
