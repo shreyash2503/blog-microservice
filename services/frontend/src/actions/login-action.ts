@@ -1,8 +1,8 @@
 "use server";
-import { loginSchema } from "@/schema/login-schema";
+import { loginSchema, loginType } from "@/schema/login-schema";
 import { redirect } from "next/navigation";
 
-export async function login(prevState: any, formData: FormData) {
+export async function loginAction(prevState: any, formData: FormData) {
   const email = formData?.get("email") as string;
   const password = formData?.get("password") as string;
   const result = loginSchema.safeParse({ username: email, password });

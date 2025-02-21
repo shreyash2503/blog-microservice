@@ -1,11 +1,11 @@
 "use client";
-import { login } from "@/actions/login-action";
+import { loginAction } from "@/actions/login-action";
 import LoginComponent from "@/components/auth/login-component";
 import { useToast } from "@/hooks/use-toast";
 import { useActionState } from "react";
 
 export default function Login() {
-  const [state, formAction] = useActionState(login, { errors: [] });
+  const [state, formAction] = useActionState(loginAction, { errors: [] });
   const { toast } = useToast();
   console.log(state.errors);
   return (

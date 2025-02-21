@@ -38,7 +38,7 @@ export default function SignupComponent() {
             disabled={status.pending}
             className="h-9 w-full bg-gradient-to-b from-primary/85 via-primary to-primary/85 hover:bg-primary/40"
           >
-            {status.pending ? "Authenticating...." : "Log In"}
+            {status.pending ? "Creating a account for you...." : "Log In"}
           </Button>
           <Separator />
           <Button
