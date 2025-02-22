@@ -1,6 +1,8 @@
 package com.blog.authentication.handler;
 
 import com.blog.authentication.exceptions.UserNotFoundException;
+import com.blog.authentication.exceptions.UsernameExistsException;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handle(UserNotFoundException exp) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exp.getMsg());
+    }
+    @ExceptionHandler(UsernameExistsException.class)
+    public ResponseEntity<String> handle(UsernameExistsException exp) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exp.getMsg());
+
     }
 
     @ExceptionHandler(AuthenticationException.class)

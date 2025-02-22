@@ -11,6 +11,7 @@ import { CircleUserRound } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useFormStatus } from "react-dom";
+import { redirect } from "next/navigation";
 
 export default function LoginComponent() {
   const status = useFormStatus();
@@ -29,8 +30,8 @@ export default function LoginComponent() {
           </CardDescription>
         </CardHeader>
         <CardContent className="my-4 flex w-full flex-col gap-4">
-          <Input placeholder="Email" name="email" />
-          <Input placeholder="Password" name="password" />
+          <Input placeholder="Email" name="email" required />
+          <Input placeholder="Password" name="password" required />
           <Button
             disabled={status.pending}
             className="h-9 w-full bg-gradient-to-b from-primary/85 via-primary to-primary/85 hover:bg-primary/40"
@@ -67,6 +68,7 @@ export default function LoginComponent() {
             </svg>
             Log In with Google
           </Button>
+          <p className="text-center text-gray-300">Don't have account ? <span onClick={() => redirect("/signup")} className="text-white font-bold text-center cursor-pointer hover:text-gray-300">Sign Up</span></p>
         </CardContent>
       </Card>
     </div>

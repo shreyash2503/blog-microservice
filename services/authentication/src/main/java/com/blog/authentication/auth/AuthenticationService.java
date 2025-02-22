@@ -2,6 +2,7 @@ package com.blog.authentication.auth;
 
 import com.blog.authentication.config.JwtService;
 import com.blog.authentication.exceptions.UserNotFoundException;
+import com.blog.authentication.exceptions.UsernameExistsException;
 import com.blog.authentication.kafka.AccountCreationConfirmation;
 import com.blog.authentication.kafka.AccountCreationConfirmationCreator;
 import com.blog.authentication.token.Token;
@@ -31,6 +32,11 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
         var user = authenticationMapper.toUser(request);
         // Check if user exists and return 201 instead of 200
+        var prevUser = userRepository.findByEmail(user.getEmail());
+        if (prevUser.isPresent()) {
+            throw new UsernameExistsException("User already exists.");
+
+        }
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);

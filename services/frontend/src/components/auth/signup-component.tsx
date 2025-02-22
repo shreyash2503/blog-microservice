@@ -11,6 +11,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useFormStatus } from "react-dom";
 import { Separator } from "../ui/separator";
+import { redirect } from "next/navigation";
 
 export default function SignupComponent() {
   const status = useFormStatus();
@@ -30,10 +31,10 @@ export default function SignupComponent() {
           </CardDescription>
         </CardHeader>
         <CardContent className="my-4 flex w-full flex-col gap-4">
-          <Input placeholder="Firstname" name="firstname" />
-          <Input placeholder="Lastname" name="lastname" />
-          <Input placeholder="Email" name="email" />
-          <Input placeholder="Password" name="password" />
+          <Input placeholder="Firstname" name="firstname" required/>
+          <Input placeholder="Lastname" name="lastname"  required/>
+          <Input placeholder="Email" name="email"  required/>
+          <Input placeholder="Password" name="password" required/>
           <Button
             disabled={status.pending}
             className="h-9 w-full bg-gradient-to-b from-primary/85 via-primary to-primary/85 hover:bg-primary/40"
@@ -70,6 +71,8 @@ export default function SignupComponent() {
             </svg>
             Log In with Google
           </Button>
+
+          <p className="text-gray-300 text-center">Already have a account ? <span onClick={() => redirect("/login")} className="text-white font-bold hover:text-gray-300 cursor-pointer">Log In</span></p>
         </CardContent>
       </Card>
     </div>
