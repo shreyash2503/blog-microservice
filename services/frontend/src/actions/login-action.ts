@@ -1,6 +1,7 @@
 "use server";
 import { loginSchema, loginType } from "@/schema/login-schema";
 import { redirect } from "next/navigation";
+import { toast } from "sonner";
 
 export async function loginAction(prevState: any, formData: FormData) {
   const email = formData?.get("email") as string;
@@ -24,7 +25,7 @@ export async function loginAction(prevState: any, formData: FormData) {
   });
   if (response.status === 200) {
     const json = await response.json();
-    console.log(json);
+    toast("Logged In Successfully")
     redirect("/");
   } else {
     return {

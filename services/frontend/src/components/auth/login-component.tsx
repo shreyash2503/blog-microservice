@@ -14,6 +14,10 @@ import { useFormStatus } from "react-dom";
 import { redirect } from "next/navigation";
 
 export default function LoginComponent() {
+  function redirectToSignup(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    redirect("/signup");
+  }
   const status = useFormStatus();
   return (
     <div className="flex max-h-dvh min-h-screen w-screen items-center justify-center overflow-hidden border-2 bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
@@ -68,7 +72,7 @@ export default function LoginComponent() {
             </svg>
             Log In with Google
           </Button>
-          <p className="text-center text-gray-300">Don't have account ? <span onClick={() => redirect("/signup")} className="text-white font-bold text-center cursor-pointer hover:text-gray-300">Sign Up</span></p>
+          <p className="text-center text-gray-300">Don't have account ? <Button variant="ghost" onClick={redirectToSignup} className="text-white font-bold text-center cursor-pointer hover:text-gray-300">Sign Up</Button></p>
         </CardContent>
       </Card>
     </div>

@@ -12,9 +12,14 @@ import { Button } from "../ui/button";
 import { useFormStatus } from "react-dom";
 import { Separator } from "../ui/separator";
 import { redirect } from "next/navigation";
+import React from "react";
 
 export default function SignupComponent() {
   const status = useFormStatus();
+  function redirectToLogin(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    redirect("/login")
+  }
 
   return (
     <div className="flex max-h-dvh min-h-screen w-screen items-center justify-center overflow-hidden border-2 bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
@@ -72,7 +77,7 @@ export default function SignupComponent() {
             Log In with Google
           </Button>
 
-          <p className="text-gray-300 text-center">Already have a account ? <span onClick={() => redirect("/login")} className="text-white font-bold hover:text-gray-300 cursor-pointer">Log In</span></p>
+          <p className="text-gray-300 text-center">Already have a account ? <Button variant="ghost" onClick={redirectToLogin} className="text-white font-bold hover:text-gray-300 cursor-pointer">Log In</Button></p>
         </CardContent>
       </Card>
     </div>
