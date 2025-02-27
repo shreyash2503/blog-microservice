@@ -24,6 +24,7 @@ app.post('/upload-image', async (c) => {
     const AWS_BUCKET_NAME = (c.env as any).AWS_BUCKET_NAME as string
     const AWS_KEY_ID = (c.env as any).AWS_KEY_ID as string
     const AWS_SECRET_KEY = (c.env as any).AWS_SECRET_KEY as string
+    const AWS_CLOUDFRONT_URL = (c.env as any).AWS_CLOUDFRONT_URL as string
 
     const body = await c.req.formData()
     const files = body.getAll('file')
@@ -62,9 +63,9 @@ app.post('/upload-image', async (c) => {
       formData.append(key, value);
     })
     formData.append('key', fileName);
-    const compressedImageBuffer = await compressImage(file);
-    const compressedBlob = new Blob([compressedImageBuffer], { type: 'image/jpeg' });
-    formData.append('file', compressedBlob, fileName);
+    // const compressedImageBuffer = await compressImage(file);
+    // const compressedBlob = new Blob([compressedImageBuffer], { type: 'image/jpeg' });
+    formData.append('file', file, fileName);
     const uploadResponse = await fetch(url, {
       method: "POST",
       body: formData
@@ -73,7 +74,8 @@ app.post('/upload-image', async (c) => {
     if (uploadResponse.status === 204) {
       return c.json({ 
         message : "success",
-        fileName
+        fileName,
+        url: AWS_CLOUDFRONT_URL + fileName
       }, 200);
     } else {
       return c.json({
