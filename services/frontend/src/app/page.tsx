@@ -14,8 +14,6 @@ export default function Home() {
               <BlogCard key={num} />
             ))}
           </div> */}
-          <MarkdownEditor />
-
         </div>
       </div>
     </>

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import Navbar from "@/components/home/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,15 +30,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main>{children}</main>
-          <Toaster />
-        </ThemeProvider>
+        <div className="relative h-screen min-h-screen w-full">
+          <div className="relative mx-auto flex max-w-7xl flex-col">
+            <Navbar />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <main>{children}</main>
+              <Toaster />
+            </ThemeProvider>
+            {/* <div className="flex flex-wrap justify-center items-center gap-10 m-5" >
+            {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
+              <BlogCard key={num} />
+            ))}
+          </div> */}
+          </div>
+        </div>
       </body>
     </html>
   );
