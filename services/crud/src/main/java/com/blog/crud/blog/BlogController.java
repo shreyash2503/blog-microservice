@@ -35,12 +35,13 @@ public class BlogController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBlog(@PathVariable("id") String id) {
+    public ResponseEntity<Void> deleteBlog(@PathVariable("id") String id, HttpServletRequest request) {
         // TODO: Check if it is same user that is deleting the blog
         if (id == null) {
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        blogService.deleteBlog(id);
+        String username = (String) request.getAttribute("username");
+        blogService.deleteBlog(id, username);
         return ResponseEntity.accepted().build();
     }
     //TODO: Add get blogs by category function and get all blogs functions (paginated)

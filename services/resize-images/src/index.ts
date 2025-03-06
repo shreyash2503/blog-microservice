@@ -1,9 +1,10 @@
 import { Hono } from 'hono'
 import { AWSSignatureV4 } from './aws-signature'
 import { compressImage } from './utils'
-
+import { cors } from "hono/cors"
 
 const app = new Hono()
+app.use(cors())
 
 app.get('/', c => c.text("Image Resizer online, Upload images to resize and upload"))
 
