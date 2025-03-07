@@ -6,6 +6,16 @@ import dynamic from "next/dynamic";
 import { useState, useEffect, useRef } from "react";
 import markdownProcessor from "@/lib/markdown-processor";
 import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { createBlog } from "@/actions/blog-crud";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -91,18 +101,40 @@ export default function MarkdownEditor() {
 
   return (
     <>
-      <div
-        onDragStart={handleDragOver}
-        onDrop={async (e) => handleImagePaste(e)}
-        ref={divRef}
-      >
-        <Input placeholder="Enter a name for the blog" className="w-fit" />
-        <MDEditor
-          value={value}
-          onChange={(val) => setValue(val || "")}
-          height={height - 100}
-        />
-      </div>
+      <form action={createBlog}>
+        <div
+          onDragStart={handleDragOver}
+          onDrop={async (e) => await handleImagePaste(e)}
+          ref={divRef}
+          className="gap-3 flex flex-col items-center md:items-start"
+        >
+          <Input placeholder="Enter a name for the blog" className="w-fit" name="name" />
+          <Select name="category">
+            <SelectTrigger className="w-fit">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="1">Technology</SelectItem>
+                <SelectItem value="51">Health</SelectItem>
+                <SelectItem value="101">LifeStyle</SelectItem>
+                <SelectItem value="151">Education</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <MDEditor
+            value={value}
+            onChange={(val) => setValue(val || "")}
+            height={height - 100}
+            preview="edit"
+            className="mb-1 md:w-full"
+          />
+          <input className="hidden" value={value} name="content" readOnly />
+          <div className="w-full flex justify-end m-1">
+            <Button className="">Save</Button>
+          </div>
+        </div>
+      </form>
       {/* <div dangerouslySetInnerHTML={{__html: processMarkdown}} /> */}
     </>
   );
