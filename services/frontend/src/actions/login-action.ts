@@ -3,16 +3,13 @@ import { loginSchema, loginType } from "@/schema/login-schema";
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
-export async function loginAction(prevState: any, formData: FormData) {
-  const email = formData?.get("email") as string;
-  const password = formData?.get("password") as string;
+export async function loginAction(email: string, password: string): Promise<{ errors: string[] } | { token: string; refreshToken: string; }> {
   const result = loginSchema.safeParse({ username: email, password });
   if (!result.success) {
     const errors = [];
     for (const error of result.error.errors) {
       errors.push(error.message);
     }
-    console.log(errors);
     return { errors };
 
   }
@@ -25,14 +22,10 @@ export async function loginAction(prevState: any, formData: FormData) {
   });
   if (response.status === 200) {
     const json = await response.json();
-    toast("Logged In Successfully")
-    redirect("/");
+    return json;
   } else {
     return {
       errors: ["Error while logging in !!"]
     }
   }
-
-
-  return { errors: [] };
 }

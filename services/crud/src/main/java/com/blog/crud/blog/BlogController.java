@@ -14,8 +14,9 @@ public class BlogController {
     private final BlogService blogService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<BlogResponse> getBlog(@PathVariable("id") String id) {
-        return ResponseEntity.ok(blogService.getBlog(id));
+    public ResponseEntity<BlogResponse> getBlog(@PathVariable("id") String id, HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        return ResponseEntity.ok(blogService.getBlog(id, username));
     }
 
     @PostMapping

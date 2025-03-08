@@ -21,7 +21,7 @@ public class BlogService {
     private final CategoryRepository categoryRepository;
     private final BlogRepository blogRepository;
     private final Encryption encryptor;
-    private final PaymentClient paymentClient;
+    // private final PaymentClient paymentClient;
 
     public BlogResponse getBlog(String encodedId, String username) {
         // Add logic to check if the blog that is being fetched is under subscription or not 
@@ -29,10 +29,10 @@ public class BlogService {
         var blog = blogRepository.findById(id)
                 .orElseThrow(() -> new BlogNotFoundException(Constants.BLOG_DOES_NOT_EXISTS));
         
-        var isSubscribed = paymentClient.getPaymentStatus(username); 
-        if (isSubscribed) {
-            return blogMapper.toBlogResponse(blog);
-        }
+        // var isSubscribed = paymentClient.getPaymentStatus(username); 
+        // if (isSubscribed) {
+        //     return blogMapper.toBlogResponse(blog);
+        // }
         blog.setContent(blog.getContent().substring(100));
 
         return blogMapper.toBlogResponse(blog);

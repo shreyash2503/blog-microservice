@@ -12,15 +12,32 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useFormStatus } from "react-dom";
 import { redirect } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { useState } from "react";
 
 export default function LoginComponent() {
   function redirectToSignup(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     redirect("/signup");
   }
-  const status = useFormStatus();
+  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [pending, setPending] = useState(false);
+
+  const handleLogin = async () => {
+    setPending(true);
+    const response = await login(email, password);
+    if (response.success) {
+      setPending(false);
+      redirect("/write/322");
+    } else {
+      setPending(false);
+      redirect("/login");
+    }
+  } 
   return (
-    <div className="flex max-h-dvh min-h-screen w-screen items-center justify-center overflow-hidden border-2 bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
+    <div className="flex max-h-dvh min-h-screen w-screen items-center justify-center bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
       <Card className="relative z-[20] flex h-fit w-[350px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-background/20 py-2 backdrop-blur-xl">
         <CardHeader className="flex items-center justify-center">
           <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-primary/20">
@@ -34,13 +51,14 @@ export default function LoginComponent() {
           </CardDescription>
         </CardHeader>
         <CardContent className="my-4 flex w-full flex-col gap-4">
-          <Input placeholder="Email" name="email" required />
-          <Input placeholder="Password" name="password" required />
+          <Input placeholder="Email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <Input placeholder="Password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           <Button
-            disabled={status.pending}
+            disabled={pending}
             className="h-9 w-full bg-gradient-to-b from-primary/85 via-primary to-primary/85 hover:bg-primary/40"
+            onClick={handleLogin}
           >
-          {status.pending ? "Authenticating...." : "Log In"}
+          {pending ? "Authenticating...." : "Login"}
           </Button>
           <Separator />
           <Button
