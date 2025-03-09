@@ -14,6 +14,7 @@ import { useFormStatus } from "react-dom";
 import { redirect } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginComponent() {
   function redirectToSignup(e: React.MouseEvent<HTMLButtonElement>) {
@@ -24,20 +25,21 @@ export default function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
+  const router = useRouter()
 
   const handleLogin = async () => {
     setPending(true);
     const response = await login(email, password);
     if (response.success) {
       setPending(false);
-      redirect("/write/322");
+      router.push("/write/322");
     } else {
       setPending(false);
-      redirect("/login");
+      router.push("/login");
     }
   } 
   return (
-    <div className="flex max-h-dvh min-h-screen w-screen items-center justify-center bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
+    <div className="flex max-h-dvh items-center justify-center overflow-hidden bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
       <Card className="relative z-[20] flex h-fit w-[350px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-background/20 py-2 backdrop-blur-xl">
         <CardHeader className="flex items-center justify-center">
           <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-primary/20">

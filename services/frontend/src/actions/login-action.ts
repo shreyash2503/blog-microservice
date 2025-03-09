@@ -3,7 +3,7 @@ import { loginSchema, loginType } from "@/schema/login-schema";
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
-export async function loginAction(email: string, password: string): Promise<{ errors: string[] } | { token: string; refreshToken: string; }> {
+export async function loginAction(email: string, password: string): Promise<{ errors: string[] } | { access_token: string; refresh_token: string; }> {
   const result = loginSchema.safeParse({ username: email, password });
   if (!result.success) {
     const errors = [];
@@ -22,6 +22,7 @@ export async function loginAction(email: string, password: string): Promise<{ er
   });
   if (response.status === 200) {
     const json = await response.json();
+    console.log(json);
     return json;
   } else {
     return {

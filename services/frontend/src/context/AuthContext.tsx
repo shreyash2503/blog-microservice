@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser({ email: decoded.email });
         setToken(token);
       } catch (e) {
-        console.error("Invalid Token");
+        console.log("Invalid Token");
       }
     }
   }, []);
@@ -43,9 +43,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if ("errors" in response) {
         return { success: false, errors: response.errors };
       } else {
-        setToken(response.token);
-        localStorage.setItem("token", response.token);
-        const decoded = JSON.parse(atob(response.token.split(".")[1]));
+        setToken(response.access_token);
+        localStorage.setItem("token", response.access_token);
+        const decoded = JSON.parse(atob(response.access_token.split(".")[1]));
+        console.log("decoded" + decoded);
         setUser({ email: decoded.email });
         return { success: true };
       }
