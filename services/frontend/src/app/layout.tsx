@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/home/navbar";
 import { AuthProvider } from "@/context/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,6 @@ export default function RootLayout({
       >
         <div className="relative h-screen min-h-screen w-full">
           <div className="relative mx-auto flex max-w-7xl flex-col">
-            <Navbar />
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
@@ -41,7 +41,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <AuthProvider>
-                <main>{children}</main>
+                {children}
               </AuthProvider>
               <Toaster />
             </ThemeProvider>

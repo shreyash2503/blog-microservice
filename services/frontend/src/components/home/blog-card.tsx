@@ -7,7 +7,7 @@ export default function BlogCard() {
         <>
         <Card className="relative flex h-fit w-[350px] flex-col overflow-hidden border-2">
             <CardHeader>
-                <Image src="https://github.com/shadcn.png" height={200} width={350} alt="Blog Header card" />
+                <Image src="https://github.com/shadcn.png" height={200} width={350} alt="Blog Header card" unoptimized />
             </CardHeader>
             <CardContent className="">
                 <p className="text-left font-extrabold text-2xl">This is the blog Header or Title</p>

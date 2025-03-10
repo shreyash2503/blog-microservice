@@ -3,12 +3,14 @@
 import { signupSchema, signupType } from "@/schema/signup-schema";
 import { redirect } from "next/navigation";
 
-export async function signupAction(prevState: any, formData: FormData) {
-  const firstname = formData.get("firstname") as string;
-  const lastname = formData.get("lastname") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
+export async function signupAction(
+  firstname: string,
+  lastname: string,
+  email: string,
+  password: string
+): Promise<
+  { errors: string[] } | { access_token: string; refresh_token: string }
+> {
   const result = signupSchema.safeParse({
     firstname,
     lastname,
@@ -38,13 +40,13 @@ export async function signupAction(prevState: any, formData: FormData) {
     }),
   });
 
-  if (response.status === 200) {
+  if (response.status === 201) {
     const json = await response.json();
-    redirect("/");
+    console.log(json);
+    return json;
   } else if (response.status === 409) {
     return { errors: ["User already exists"] };
   } else {
     return { errors: ["Error while signing up"] };
   }
-
 }

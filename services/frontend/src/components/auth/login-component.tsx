@@ -21,25 +21,26 @@ export default function LoginComponent() {
     e.preventDefault();
     redirect("/signup");
   }
-  const { login } = useAuth();
+  const {login} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
   const router = useRouter()
 
-  const handleLogin = async () => {
+  async function handleLogin() {
     setPending(true);
     const response = await login(email, password);
-    if (response.success) {
-      setPending(false);
-      router.push("/write/322");
-    } else {
+
+    if (!response.success) {
       setPending(false);
       router.push("/login");
+    } else {
+      setPending(false);
+      router.push("/");
     }
   } 
   return (
-    <div className="flex max-h-dvh items-center justify-center overflow-hidden bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
+    <div className="flex mt-14 max-h-dvh items-center justify-center overflow-hidden bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
       <Card className="relative z-[20] flex h-fit w-[350px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-background/20 py-2 backdrop-blur-xl">
         <CardHeader className="flex items-center justify-center">
           <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-primary/20">

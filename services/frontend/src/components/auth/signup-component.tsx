@@ -11,18 +11,42 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useFormStatus } from "react-dom";
 import { Separator } from "../ui/separator";
-import { redirect } from "next/navigation";
-import React from "react";
+import { redirect, useRouter } from "next/navigation";
+import React, { useReducer, useState } from "react";
+import { signupAction } from "@/actions/signup-action";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function SignupComponent() {
-  const status = useFormStatus();
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [pending, setPending] = useState(false);
+
+  const { signup } = useAuth();
+
+  const router = useRouter();
+
   function redirectToLogin(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     redirect("/login")
   }
 
+  async function handleSignup() {
+    setPending(true);
+    const response = await signup(firstname, lastname, email, password);
+
+    if (!response.success) {
+      setPending(false);
+      // Show errors
+    } else {
+      setPending(false);
+      router.push("/")
+    }
+  }
+
   return (
-    <div className="flex max-h-dvh items-center justify-center overflow-hidden border-2 bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
+    <div className="flex max-h-dvh items-center justify-center overflow-hidden bg-grid-small-black/[0.39] dark:bg-grid-small-white/[0.025]">
       <Card className="relative z-[20] flex h-fit w-[350px] flex-col items-center justify-center overflow-hidden rounded-2xl bg-background/20 py-2 backdrop-blur-xl">
         <CardHeader className="flex items-center justify-center">
           <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-primary/20">
@@ -36,15 +60,16 @@ export default function SignupComponent() {
           </CardDescription>
         </CardHeader>
         <CardContent className="my-4 flex w-full flex-col gap-4">
-          <Input placeholder="Firstname" name="firstname" required/>
-          <Input placeholder="Lastname" name="lastname"  required/>
-          <Input placeholder="Email" name="email"  required/>
-          <Input placeholder="Password" name="password" required/>
+          <Input placeholder="Firstname" name="firstname" value={firstname} onChange={(e) => setFirstname(e.target.value)} required/>
+          <Input placeholder="Lastname" name="lastname" value={lastname} onChange={(e) => setLastname(e.target.value)}  required/>
+          <Input placeholder="Email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}  required/>
+          <Input placeholder="Password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
           <Button
-            disabled={status.pending}
+            disabled={pending}
             className="h-9 w-full bg-gradient-to-b from-primary/85 via-primary to-primary/85 hover:bg-primary/40"
+            onClick={handleSignup}
           >
-            {status.pending ? "Creating a account for you...." : "Log In"}
+            {pending ? "Creating a account for you...." : "Log In"}
           </Button>
           <Separator />
           <Button

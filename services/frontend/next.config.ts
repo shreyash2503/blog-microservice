@@ -6,7 +6,7 @@ module.exports = removeImports({});
 const nextConfig: NextConfig = {
   /* config options here */
   images : {
-    domains: ["github.com"]
+    domains: ["github.com"],
 
   }
 };
