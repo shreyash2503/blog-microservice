@@ -26,6 +26,7 @@ interface AuthContextType {
   ) => Promise<{ success: boolean; errors?: string[] }>;
   logout: () => void;
   isAuthenticated: boolean;
+  isLoading: boolean
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -33,44 +34,27 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => {
-    if (typeof window !== 'undefined') {
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [isLoading,setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadAuthState = () => {
       const token = localStorage.getItem("token");
-      
+      console.log(token);
       if (token) {
         try {
-        const decoded = JSON.parse(atob(token.split('.')[1]));
-        return {email: decoded.email}
+          const decoded = JSON.parse(atob(token.split(".")[1]));
+          setUser({ email: decoded.email });
+          setToken(token);
         } catch (e) {
-          console.log("Invalid token");
-          return null;
+          console.log("Invalid Token");
         }
       }
-
-    }
-    return null;
-  });
-  const [token, setToken] = useState<string | null>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem("token");
-    }
-    return null;
-
-  });
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   console.log(token)
-  //   if (token) {
-  //     try {
-  //       const decoded = JSON.parse(atob(token.split(".")[1]));
-  //       setUser({ email: decoded.email });
-  //       setToken(token);
-  //     } catch (e) {
-  //       console.log("Invalid Token");
-  //     }
-  //   }
-  // }, []);
+      setIsLoading(false);
+    };
+    loadAuthState();
+  }, []);
   const login = async (email: string, password: string) => {
     try {
       const response = await loginAction(email, password);
@@ -119,7 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated: !!user, token, signup }}
+      value={{ user, login, logout, isAuthenticated: !!user, token, signup, isLoading }}
     >
       {children}
     </AuthContext.Provider>

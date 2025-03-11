@@ -1,4 +1,5 @@
 import BlogCard from "@/components/home/blog-card";
+import Navbar from "@/components/home/navbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Image from "next/image";
 
@@ -8,6 +9,7 @@ export default function Home() {
     <ProtectedRoute>
       <div className="">
         <div className="">
+          <Navbar />
 
           {/* <Navbar /> */}
           <div className="flex flex-wrap justify-center items-center gap-10 m-5" >
