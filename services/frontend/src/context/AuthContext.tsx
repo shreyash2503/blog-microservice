@@ -5,6 +5,7 @@ import { loginAction } from "@/actions/login-action";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import { signupAction } from "@/actions/signup-action";
+import { signout } from "@/actions/signout-action";
 
 interface User {
   email: string;
@@ -24,7 +25,7 @@ interface AuthContextType {
     email: string,
     password: string
   ) => Promise<{ success: boolean; errors?: string[] }>;
-  logout: () => void;
+  logout: (token: string) => Promise<void>;
   isAuthenticated: boolean;
   isLoading: boolean
 }
@@ -36,7 +37,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [isLoading,setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadAuthState = () => {
@@ -91,14 +92,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { success: true };
       }
     } catch (e) {
-      return { success: false, errors: ["An  Unexcepted error occurred"] };
+      return { success: false, errors: ["An Unexcepted error occurred"] };
     }
   };
 
-  const logout = () => {
+  const logout = async (token: string) => {
+    //! Add error handling
     localStorage.removeItem("token");
     setUser(null);
     setToken(null);
+    const response = await signout(token);
   };
 
   return (

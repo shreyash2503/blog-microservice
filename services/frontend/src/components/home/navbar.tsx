@@ -9,6 +9,7 @@ import {
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
 import { ModeToggle } from "./theme-toggle";
+import { Combobox } from "../ui/combobox";
 
 export default function Navbar() {
   return (
@@ -18,10 +19,11 @@ export default function Navbar() {
       </div>
 
       {/*Desktop Navigation*/}
-      <div className="hidden gap-10 text-sm text-muted-foreground md:flex">
+      <div className="hidden gap-10 text-sm text-muted-foreground md:flex md:items-center">
         <Link href="https://github.com/shreyash2503">Github</Link>
         <Link href="https://github.com/shreyash2503">Github</Link>
         <Link href="https://github.com/shreyash2503">Github</Link>
+        <Combobox />
         <ModeToggle />
       </div>
 
