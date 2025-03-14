@@ -42,11 +42,11 @@ export async function signupAction(
 
   if (response.status === 201) {
     const json = await response.json();
-    console.log(json);
     return json;
   } else if (response.status === 409) {
     return { errors: ["User already exists"] };
   } else {
-    return { errors: ["Error while signing up"] };
+    const text = await response.text();
+    return { errors: [text] };
   }
 }

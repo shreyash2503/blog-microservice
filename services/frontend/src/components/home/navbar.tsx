@@ -12,6 +12,16 @@ import { ModeToggle } from "./theme-toggle";
 import { Combobox } from "../ui/combobox";
 
 export default function Navbar() {
+  const options = [
+    {
+      value: "sign-out",
+      label: "Sign out"
+    },
+    {
+      value: "settings",
+      label: "Settings"
+    }
+  ];
   return (
     <div className="mx-auto flex w-full items-center justify-between p-4">
       <div className="w-[180px]">
@@ -23,7 +33,7 @@ export default function Navbar() {
         <Link href="https://github.com/shreyash2503">Github</Link>
         <Link href="https://github.com/shreyash2503">Github</Link>
         <Link href="https://github.com/shreyash2503">Github</Link>
-        <Combobox />
+        <Combobox options={options} />
         <ModeToggle />
       </div>
 

@@ -22,6 +22,7 @@ export default function SignupComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const { signup } = useAuth();
 
@@ -38,7 +39,7 @@ export default function SignupComponent() {
 
     if (!response.success) {
       setPending(false);
-      // Show errors
+      setErrors(response.errors as string[]);
     } else {
       setPending(false);
       router.push("/")
@@ -103,6 +104,7 @@ export default function SignupComponent() {
           </Button>
 
           <p className="text-gray-300 text-center">Already have a account ? <Button variant="ghost" onClick={redirectToLogin} className="text-white font-bold hover:text-gray-300 cursor-pointer">Log In</Button></p>
+          <p className="text-center mt-2 text-red-600">{errors[0]}</p>
         </CardContent>
       </Card>
     </div>

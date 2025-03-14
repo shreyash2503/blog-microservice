@@ -25,6 +25,7 @@ export default function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
   const router = useRouter()
 
   async function handleLogin() {
@@ -32,8 +33,9 @@ export default function LoginComponent() {
     const response = await login(email, password);
 
     if (!response.success) {
+      console.log(response.errors);
+      setErrors(response.errors as string[]);
       setPending(false);
-      router.push("/login");
     } else {
       setPending(false);
       router.push("/");
@@ -94,6 +96,7 @@ export default function LoginComponent() {
             Log In with Google
           </Button>
           <p className="text-center text-gray-300">Don't have account ? <Button variant="ghost" onClick={redirectToSignup} className="text-white font-bold text-center cursor-pointer hover:text-gray-300">Sign Up</Button></p>
+          {errors.map((error, index) => <p key={index} className="text-center mt-2 text-red-600">{error}</p>)}
         </CardContent>
       </Card>
     </div>

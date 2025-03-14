@@ -22,11 +22,11 @@ export async function loginAction(email: string, password: string): Promise<{ er
   });
   if (response.status === 200) {
     const json = await response.json();
-    console.log(json);
     return json;
   } else {
+    const text = await response.text();
     return {
-      errors: ["Error while logging in !!"]
+      errors: [text]
     }
   }
 }

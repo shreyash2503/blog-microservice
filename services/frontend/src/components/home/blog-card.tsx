@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 export default function BlogCard() {
     return(
         <>
-        <Card className="relative flex h-fit w-[350px] flex-col overflow-hidden border-2">
+        <Card className="relative flex h-fit w-[350px] flex-col overflow-hidden border-2 hover:opacity-55">
             <CardHeader>
                 <Image src="https://github.com/shadcn.png" height={200} width={350} alt="Blog Header card" unoptimized />
             </CardHeader>
