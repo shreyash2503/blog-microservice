@@ -20,7 +20,7 @@ export default function BlogCard() {
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">
-                        <p className="">Author: John Doe</p>
+                        <p className="">Author: John Do</p>
                         <p className="">Authored Date: 5th Feb 2025</p>
                     </div>
                 </div>

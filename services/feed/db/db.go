@@ -10,7 +10,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var DB *sqlx.DB;
+var DB *sqlx.DB
+
 func InitDB() {
 	e := godotenv.Load()
 
