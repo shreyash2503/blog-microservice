@@ -5,16 +5,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/shreyash2503/blog-feed/db"
+	"github.com/shreyash2503/blog-feed/routes"
 )
-
-
-
-
 
 func main() {
 	db.InitDB()
 	port := os.Getenv("PORT")
-	
+
 	if port == "" {
 		port = "8777"
 	}
@@ -22,13 +19,12 @@ func main() {
 	router := gin.New()
 	router.Use(gin.Logger())
 
-	router.GET("/feed", func (c* gin.Context) {
+	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"success" : "Access granted",
+			"success": "Access granted",
 		})
 	})
-
-
-	router.Run(":"+ port)
+	routes.FeedRoutes(router)
+	router.Run(":" + port)
 
 }
