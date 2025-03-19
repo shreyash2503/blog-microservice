@@ -13,21 +13,6 @@ services:
     networks:
       - microservices-net
     restart: unless-stopped
-  pgadmin:
-    container_name: ms_pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - "6371:80"
-    networks:
-      - microservices-net
-    restart: unless-stopped
-
   mongodb:
     container_name: ms_mongo_db
     image: mongo
