@@ -1,0 +1,1 @@
+ALTER TABLE _like ADD COLUMN category_id INTEGER NOT NULL REFERENCES category(id)

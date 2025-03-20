@@ -12,7 +12,7 @@ import (
 
 var DB *sqlx.DB
 
-func InitDB() {
+func InitDB() *sqlx.DB {
 	e := godotenv.Load()
 
 	if e != nil {
@@ -28,4 +28,5 @@ func InitDB() {
 	}
 
 	fmt.Println("Database connection successfull!")
+	return DB
 }
