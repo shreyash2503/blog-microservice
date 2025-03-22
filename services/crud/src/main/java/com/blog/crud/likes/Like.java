@@ -1,6 +1,8 @@
 package com.blog.crud.likes;
 
 import com.blog.crud.blog.Blog;
+import com.blog.crud.category.Category;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,7 +10,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.Locale.Category;
 
 @Getter
 @Setter

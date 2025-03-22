@@ -3,6 +3,9 @@ package com.blog.crud.likes;
 import com.blog.crud.blog.Blog;
 import com.blog.crud.utils.Encryption;
 import lombok.RequiredArgsConstructor;
+import com.blog.crud.category.Category;
+
+
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class LikesMapper {
                         .id(encryptor.decodeId(likeRequest.blogId()))
                         .build())
                 .likeType(likeType)
+                .category(Category.builder().id(likeRequest.categoryId()).build())
                 .build();
 
     }
