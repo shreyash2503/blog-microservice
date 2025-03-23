@@ -88,5 +88,6 @@ func Authenticate(c *gin.Context) {
 	}
 
 	c.Set("email", userId)
+	fmt.Println("Passed successfully")
 	c.Next()
 }

@@ -17,11 +17,13 @@ public class LikesService {
     private final LikesMapper likesMapper;
 
     public void updateLikes(LikesRequest likesRequest, LikeType likeType) {
+        // TODO: Instead of passing the userId and categoryId to the likesRequest figure it out from the blog
         var blogId = likesRequest.blogId();
         System.out.println(blogId);
         var blog = blogRepository
                 .findById(encryptor.decodeId(blogId))
                 .orElseThrow(() -> new RuntimeException("Blog does not exists"));
+        // TODO: Handle the above exception in the global exception handler
         var like = likesRepository.findByUserIdAndBlog_Id(likesRequest.userId(), blog.getId());
         if (like.isPresent()) {
             Like existingLike = like.get();

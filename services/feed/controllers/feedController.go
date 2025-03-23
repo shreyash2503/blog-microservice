@@ -1,45 +1,43 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
-	"strconv"
-	"strings"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/lib/pq"
 	"github.com/shreyash2503/blog-feed/models"
 )
 
 func GetFeed(username string, db *sqlx.DB) ([]models.Blog, error) {
 	var likes []models.Like
-	likesQuery := `SELECT * FROM likes WHERE user_id = $1 and like_type = $2`
+	likesQuery := `SELECT * FROM _like WHERE user_id = 'shreyashtekade2512@gmail.com' and like_type = $1`
+	fmt.Println("Hello this is happening")
 
-	err := db.Select(&likes, likesQuery, username, "like")
+	err := db.Select(&likes, likesQuery, "LIKE")
 
 	if err != nil {
 		log.Println("Error fetching likes::", err)
 		return nil, err
 	}
+	fmt.Println(likes)
 
-	var categories []int
+	categories := make([]int, len(likes))
 
-	for _, like := range likes {
-		category := like.CategoryID
-		categories = append(categories, category)
+	for index, like := range likes {
+		categories[index] = like.CategoryID
 	}
 
-	strArray := make([]string, len(categories))
+	if len(categories) == 0 {
+		return []models.Blog{}, nil
 
-	for i, num := range categories {
-		strArray[i] = strconv.Itoa(num)
 	}
 
-	categoriesString := strings.Join(strArray, ",")
-
-	blogsQuery := `SELECT * from blog WHERE category_id ANY(ARRAY[$1])`
+	blogsQuery := `SELECT * from blog WHERE category_id = ANY($1::int[])`
 
 	var blogs []models.Blog
 
-	error := db.Select(&blogs, blogsQuery, categoriesString)
+	error := db.Select(&blogs, blogsQuery, pq.Array(categories))
 
 	if error != nil {
 		log.Println("Error fetching the blogs::", error)
