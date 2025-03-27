@@ -2,8 +2,6 @@
 
 import { createContext, useEffect, useState } from "react";
 import { loginAction } from "@/actions/login-action";
-import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
 import { signupAction } from "@/actions/signup-action";
 import { signout } from "@/actions/signout-action";
 
@@ -46,6 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (token) {
         try {
           const decoded = JSON.parse(atob(token.split(".")[1]));
+          document.cookie = `token=${token}; path=/; max-age=604800`
           setUser({ email: decoded.email });
           setToken(token);
         } catch (e) {
@@ -64,6 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setToken(response.access_token);
         localStorage.setItem("token", response.access_token);
+        document.cookie = `token=${response.access_token}; path=/`
         const decoded = JSON.parse(atob(response.access_token.split(".")[1]));
         console.log("decoded" + decoded);
         setUser({ email: decoded.email });
