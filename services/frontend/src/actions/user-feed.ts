@@ -1,12 +1,9 @@
 "use server";
 
 import { Blog } from "@/types/blog";
-import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export async function loadUserFeed(): Promise<Blog[]> {
-    const token = (await cookies()).get("token")
-    console.log((await cookies()).getAll())
-    console.log(token);
+export async function loadUserFeed(token: string): Promise<Blog[]> {
     const response = await fetch(process.env.GET_USER_FEED as string, {
         headers : {
             "Content-Type": "application/json",
@@ -14,6 +11,9 @@ export async function loadUserFeed(): Promise<Blog[]> {
         }, 
         method: "GET"
     });
+    if (response.status === 403) {
+        redirect("/login")
+    }
     const json = await response.json();
 
     return json.data;

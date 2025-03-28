@@ -1,9 +1,11 @@
 "use client";
 
 import { createContext, useEffect, useState } from "react";
-import { loginAction } from "@/actions/login-action";
+import { loginAction, validateToken } from "@/actions/login-action";
 import { signupAction } from "@/actions/signup-action";
 import { signout } from "@/actions/signout-action";
+import { useToast } from "@/hooks/use-toast";
+import { redirect } from "next/navigation";
 
 interface User {
   email: string;
@@ -25,7 +27,7 @@ interface AuthContextType {
   ) => Promise<{ success: boolean; errors?: string[] }>;
   logout: (token: string) => Promise<void>;
   isAuthenticated: boolean;
-  isLoading: boolean
+  isLoading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -36,19 +38,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast }  = useToast();
 
   useEffect(() => {
-    const loadAuthState = () => {
+    const loadAuthState = async () => {
       const token = localStorage.getItem("token");
       console.log(token);
       if (token) {
-        try {
-          const decoded = JSON.parse(atob(token.split(".")[1]));
-          document.cookie = `token=${token}; path=/; max-age=604800`
-          setUser({ email: decoded.email });
-          setToken(token);
-        } catch (e) {
-          console.log("Invalid Token");
+        const isValid = await validateToken(token);
+        if (isValid) {
+          try {
+            const decoded = JSON.parse(atob(token.split(".")[1]));
+            console.log("Setting cookie");
+            document.cookie = `token=${token}; path=/; max-age=604800; SameSite=Strict; Secure`;
+            setUser({ email: decoded.email });
+            setToken(token);
+          } catch (e) {
+            console.log("Invalid Token");
+          }
+        } else {
+          toast({
+            title: "Invalid Session!",
+            description: "Session no longer valid please login again!"
+          })
+          redirect("/login");
         }
       }
       setIsLoading(false);
@@ -63,7 +76,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setToken(response.access_token);
         localStorage.setItem("token", response.access_token);
-        document.cookie = `token=${response.access_token}; path=/`
         const decoded = JSON.parse(atob(response.access_token.split(".")[1]));
         console.log("decoded" + decoded);
         setUser({ email: decoded.email });
@@ -106,7 +118,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated: !!user, token, signup, isLoading }}
+      value={{
+        user,
+        login,
+        logout,
+        isAuthenticated: !!user,
+        token,
+        signup,
+        isLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>

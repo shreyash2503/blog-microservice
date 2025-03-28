@@ -30,3 +30,19 @@ export async function loginAction(email: string, password: string): Promise<{ er
     }
   }
 }
+
+export async function validateToken(token: string) {
+  console.log("Printing from the validate token function::", token);
+  const response = await fetch("http://localhost:8090/api/v1/auth/validate-token", 
+    {
+      method: "GET",
+      headers : {
+        "Authorization" : `Bearer ${token}`
+      }
+    }
+  );
+  if (response.status === 403) {
+    return false;
+  }
+  return true;
+}
