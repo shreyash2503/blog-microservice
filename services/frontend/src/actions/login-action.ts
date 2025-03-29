@@ -1,7 +1,6 @@
 "use server";
 import { loginSchema, loginType } from "@/schema/login-schema";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 export async function loginAction(email: string, password: string): Promise<{ errors: string[] } | { access_token: string; refresh_token: string; }> {
   const result = loginSchema.safeParse({ username: email, password });
@@ -32,7 +31,6 @@ export async function loginAction(email: string, password: string): Promise<{ er
 }
 
 export async function validateToken(token: string) {
-  console.log("Printing from the validate token function::", token);
   const response = await fetch("http://localhost:8090/api/v1/auth/validate-token", 
     {
       method: "GET",

@@ -42,27 +42,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const loadAuthState = async () => {
-      const token = localStorage.getItem("token");
-      console.log(token);
-      if (token) {
-        const isValid = await validateToken(token);
+      const storedToken = localStorage.getItem("token");
+      console.log(storedToken);
+      if (storedToken) {
+        const isValid = await validateToken(storedToken);
+        console.log("Isvalid::", isValid)
         if (isValid) {
           try {
-            const decoded = JSON.parse(atob(token.split(".")[1]));
+            const decoded = JSON.parse(atob(storedToken.split(".")[1]));
             console.log("Setting cookie");
-            document.cookie = `token=${token}; path=/; max-age=604800; SameSite=Strict; Secure`;
+            document.cookie = `token=${storedToken}; path=/; max-age=604800; SameSite=Strict; Secure`;
             setUser({ email: decoded.email });
-            setToken(token);
+            setToken(storedToken);
           } catch (e) {
             console.log("Invalid Token");
           }
         } else {
+          console.log("Inside the the else")
           toast({
             title: "Invalid Session!",
             description: "Session no longer valid please login again!"
-          })
+          });
+          localStorage.removeItem("token");
           redirect("/login");
         }
+      } else {
+        localStorage.removeItem("token");
       }
       setIsLoading(false);
     };
@@ -76,6 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setToken(response.access_token);
         localStorage.setItem("token", response.access_token);
+        document.cookie = `token=${response.access_token}; path=/; max-age=604800; SameSite=Strict; Secure`;
         const decoded = JSON.parse(atob(response.access_token.split(".")[1]));
         console.log("decoded" + decoded);
         setUser({ email: decoded.email });
