@@ -15,6 +15,7 @@ public class BlogMapper {
                 .title(blogRequest.title())
                 .content(blogRequest.content())
                 .category(category)
+                .coverImage(blogRequest.coverImage())
                 .build();
     }
     public BlogResponse toBlogResponse(Blog blog) {
@@ -23,7 +24,8 @@ public class BlogMapper {
                 blog.getTitle(),
                 blog.getAuthor(),
                 blog.getContent(),
-                blog.getCategory().getId()
+                blog.getCategory().getId(),
+                blog.getCoverImage()
         );
 
     }

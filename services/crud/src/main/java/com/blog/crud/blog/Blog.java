@@ -33,6 +33,8 @@ public class Blog {
     private String content;
 
     private boolean isPaid;
+    
+    private String coverImage;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

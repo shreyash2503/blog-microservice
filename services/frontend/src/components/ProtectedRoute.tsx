@@ -3,6 +3,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Spinner from "./ui/spinner";
 
 
 export default function ProtectedRoute({children} : {children: React.ReactNode}) {
@@ -16,7 +17,7 @@ export default function ProtectedRoute({children} : {children: React.ReactNode})
     }, [isLoading, isAuthenticated, router]);
 
     if (isLoading) {
-        return <div>Loading....</div>
+        return null;
     }
     if (!isAuthenticated) return null;
 

@@ -25,3 +25,4 @@ export async function createBlog(formData: FormData) {
     const json = await response.json();
     console.log(json);
 }
+

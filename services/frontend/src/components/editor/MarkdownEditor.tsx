@@ -15,7 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { createBlog } from "@/actions/blog-crud";
+import { createBlog} from "@/actions/blog-crud";
+import MarkdownCover from "./MarkdownCover";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -56,6 +57,7 @@ export default function MarkdownEditor() {
     processMarkdown();
   }, [value]);
 
+
   async function uploadImage(file: File) {
     const formData = new FormData();
     formData.append("file", file);
@@ -69,11 +71,8 @@ export default function MarkdownEditor() {
       requestOptions
     );
     const body = await response.json();
-    setValue((prev) => {
-      return `${prev}\n<img src="${body.url}" width="300" height="200" />`;
-    });
+    return body.url;
   }
-
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
@@ -87,14 +86,20 @@ export default function MarkdownEditor() {
       event.dataTransfer.files.length > 0
     ) {
       const file = event.dataTransfer.files[0];
-      await uploadImage(file);
+      const url = await uploadImage(file);
+      setValue((prev) => {
+        return `${prev}\n<img src="${url}" width="300" height="200" />`;
+      });
     } else {
       const clipBoardData =
         (event as ClipboardEvent).clipboardData ||
         (window as any).clipboardData;
       if (clipBoardData?.files && clipBoardData.files.length > 0) {
         const file = clipBoardData.files[0];
-        await uploadImage(file);
+        const url = await uploadImage(file);
+        setValue((prev) => {
+          return `${prev}\n<img src="${url}" width="300" height="200" />`;
+        });
       }
     }
   }
@@ -108,7 +113,11 @@ export default function MarkdownEditor() {
           ref={divRef}
           className="gap-3 flex flex-col items-center md:items-start"
         >
-          <Input placeholder="Enter a name for the blog" className="w-fit" name="name" />
+          <Input
+            placeholder="Enter a name for the blog"
+            className="w-fit"
+            name="name"
+          />
           <Select name="category">
             <SelectTrigger className="w-fit">
               <SelectValue placeholder="Select a category" />
@@ -122,6 +131,7 @@ export default function MarkdownEditor() {
               </SelectGroup>
             </SelectContent>
           </Select>
+          <MarkdownCover uploadImage={uploadImage} />
           <MDEditor
             value={value}
             onChange={(val) => setValue(val || "")}

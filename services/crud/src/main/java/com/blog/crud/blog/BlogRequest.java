@@ -10,6 +10,9 @@ public record BlogRequest(
         String author,
         String content,
         @NotNull(message = "A blog must have a category id")
-        String categoryId
+        String categoryId,
+        String coverImage
+
+        
 ) {
 }

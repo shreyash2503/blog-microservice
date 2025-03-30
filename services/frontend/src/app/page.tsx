@@ -11,7 +11,6 @@ export default async  function Home() {
       <Navbar />
       <div className="max-h-screen flex flex-col">
         <Feed data={response} />
-
       </div>
     </ProtectedRoute>
   );

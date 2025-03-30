@@ -6,6 +6,7 @@ public record BlogResponse(
         String title,
         String author,
         String content,
-        Integer categoryId
+        Integer categoryId,
+        String coverImage
 ) {
 }
