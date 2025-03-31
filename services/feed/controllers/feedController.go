@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/jmoiron/sqlx"
@@ -12,15 +11,12 @@ import (
 func GetFeed(username string, db *sqlx.DB) ([]models.Blog, error) {
 	var likes []models.Like
 	likesQuery := `SELECT * FROM _like WHERE user_id = 'shreyashtekade2512@gmail.com' and like_type = $1`
-	fmt.Println("Hello this is happening")
 
 	err := db.Select(&likes, likesQuery, "LIKE")
 
 	if err != nil {
-		log.Println("Error fetching likes::", err)
 		return nil, err
 	}
-	fmt.Println(likes)
 
 	categories := make([]int, len(likes))
 
