@@ -40,11 +40,12 @@ export default function MarkdownCover({ uploadImage }: MardownCoverProps) {
       }
       <label
         className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-sm font-semibold cursor-pointer transition-opacity ${
-          hover ? "opacity-100" : "opacity-100 md:opacity-0"
+          hover || !coverImage ? "opacity-100" : "opacity-100 md:opacity-0"
         }`}
       >
         Upload Cover
         <input type="file" className="hidden" onChange={handleImageUpload} />
+        <input className="hidden" value={coverImage ? coverImage : ""} readOnly name="cover-image" />
       </label>
     </div>
   );

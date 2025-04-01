@@ -141,7 +141,7 @@ export default function MarkdownEditor() {
           />
           <input className="hidden" value={value} name="content" readOnly />
           <div className="w-full flex justify-end m-1">
-            <Button className="">Save</Button>
+            <Button type="submit">Save</Button>
           </div>
         </div>
       </form>
