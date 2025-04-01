@@ -1,6 +1,7 @@
+import { getBlog } from "@/actions/blog-crud";
 import MarkdownRenderer from "@/components/editor/MarkdownRenderer";
 
-export default function ReadBlog() {
+export default async function ReadBlog({params} : {params: Promise<{slug: string}>}) {
     const markdownContent = `
   # Hello, Markdown!
   - This is a list
@@ -11,6 +12,9 @@ export default function ReadBlog() {
   console.log("Code block example");
   \`\`\`
   `;
+  const {slug} = await params;
+  const data = await getBlog(slug as string);
+  console.log(data);
     return (
         <>
         <div className="flex flex-col max-w-full justify-center m-10">

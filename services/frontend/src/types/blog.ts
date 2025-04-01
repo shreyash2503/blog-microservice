@@ -1,10 +1,11 @@
 export interface Blog {
     ID: number;
-    Titlle: string;
+    Title: string;
     Author: string;
     Content: string;
     IsPaid: boolean;
+    CoverImage: string;
     CategoryID: number;
-    CreatedAt: Date;
-    LastModifiedAt: Date
+    CreatedAt: string;
+    LastModifiedAt: string
 }
