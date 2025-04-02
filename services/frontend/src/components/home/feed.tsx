@@ -12,7 +12,7 @@ export default function Feed({ data }: { data: Blog[] }) {
       <div className="flex flex-wrap justify-center items-center gap-10 m-5">
         {data ? (
           data.map((blog) => (
-            <Link href={`/read/${btoa(String(blog.ID))}`} key={blog.ID}>
+            <Link href={`/read/${btoa(String(blog.id))}`} key={blog.id}>
               <BlogCard blog={blog} />
             </Link>
           ))

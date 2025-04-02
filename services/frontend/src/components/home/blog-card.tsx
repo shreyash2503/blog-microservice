@@ -5,16 +5,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Blog } from "@/types/blog";
 
 export default function BlogCard({ blog } : { blog: Blog }) {
-    const date = new Date(blog.CreatedAt);
+    const date = new Date(blog.created_at!);
     const createdDate = String(date.getDate()) + "/" + String(date.getMonth()) + "/" + String(date.getFullYear()) 
     return(
         <>
         <Card className="relative flex h-[540px] w-[350px] flex-col overflow-hidden border-2 hover:opacity-55">
             <CardHeader>
-                <Image src={blog.CoverImage ? blog.CoverImage : "https://github.com/shadcn.png"} height={200} width={350} alt="Blog Header card" unoptimized />
+                <Image src={blog.cover_image ? blog.cover_image : "https://github.com/shadcn.png"} height={200} width={350} alt="Blog Header card" unoptimized />
             </CardHeader>
             <CardContent className="">
-                <p className="text-left font-extrabold text-2xl">{blog.Title}</p>
+                <p className="text-left font-extrabold text-2xl">{blog.title}</p>
                 <p className="text-gray-200 font-medium">This is a short summary</p>
             </CardContent>
             <CardFooter className="w-full">
@@ -24,7 +24,7 @@ export default function BlogCard({ blog } : { blog: Blog }) {
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">
-                        <p className="">Author: {blog.Author}</p>
+                        <p className="">Author: {blog.author}</p>
                         <p className="">Authored Date: {createdDate}</p>
                     </div>
                 </div>

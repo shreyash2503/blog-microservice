@@ -7,7 +7,7 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { Button } from "../ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Pen, Pencil } from "lucide-react";
 import { ModeToggle } from "./theme-toggle";
 import { Combobox } from "../ui/combobox";
 
@@ -25,12 +25,18 @@ export default function Navbar() {
   return (
     <div className="mx-auto flex w-full items-center justify-between p-4">
       <div className="w-[180px]">
-        <p className="text-2xl font-bold">Blog</p>
+        <Link href="/" className="cursor-pointer">
+        <span className="text-2xl font-bold">Blog</span>
+        </Link>
       </div>
 
       {/*Desktop Navigation*/}
       <div className="hidden gap-10 text-sm text-muted-foreground md:flex md:items-center">
-        <Link href="https://github.com/shreyash2503">Github</Link>
+        <Link href="/write/new">
+        <Button variant="outline">
+          <Pencil className="h-5 w-5" />
+        </Button>
+        </Link>
         <Link href="https://github.com/shreyash2503">Github</Link>
         <Link href="https://github.com/shreyash2503">Github</Link>
         <Combobox options={options} />

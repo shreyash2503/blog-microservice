@@ -14,11 +14,10 @@ export default async function ReadBlog({params} : {params: Promise<{slug: string
   `;
   const {slug} = await params;
   const data = await getBlog(slug as string);
-  console.log(data);
     return (
         <>
         <div className="flex flex-col max-w-full justify-center m-10">
-            <MarkdownRenderer content={markdownContent} />
+            <MarkdownRenderer content={data.content} />
         </div>
         </>
     )

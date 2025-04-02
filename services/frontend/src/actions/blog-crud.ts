@@ -1,10 +1,11 @@
 "use server";
 
+import { Blog } from "@/types/blog";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 
-export async function getBlog(id: string) {
+export async function getBlog(id: string): Promise<Blog> {
     const token = (await cookies()).get("token")?.value;
     const url = process.env.BLOG_CRUD_API as string;
     id = encodeURIComponent(id);
@@ -16,6 +17,7 @@ export async function getBlog(id: string) {
         }
     })
     const data = await response.json();
+    console.log(data);
     return data;
     
 
