@@ -19,7 +19,6 @@ export default function RootLayout({
   return (
         <div className="relative h-screen min-h-screen w-full">
           <div className="relative mx-auto flex max-w-7xl flex-col">
-            <Navbar />
               <AuthProvider>
                 <ProtectedRoute>
                   <main>{children}</main>

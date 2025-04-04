@@ -1,6 +1,5 @@
 import { loadUserFeed } from "@/actions/user-feed";
 import Feed from "@/components/home/feed";
-import Navbar from "@/components/home/navbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default async  function Home() {
@@ -8,8 +7,7 @@ export default async  function Home() {
 
   return (
     <ProtectedRoute>
-      <Navbar />
-      <div className="max-h-screen flex flex-col">
+      <div className="max-h-screen w-full flex flex-col">
         <Feed data={response} />
       </div>
     </ProtectedRoute>

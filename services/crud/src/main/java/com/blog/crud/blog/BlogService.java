@@ -11,6 +11,10 @@ import com.blog.crud.utils.Encryption;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +29,21 @@ public class BlogService {
 
     public BlogResponse getBlog(String encodedId, String username) {
         // Add logic to check if the blog that is being fetched is under subscription or not 
+        encodedId = URLDecoder.decode(encodedId, StandardCharsets.UTF_8);
+        System.out.println(encodedId);
         var id = encryptor.decodeId(encodedId);
+        System.out.println(id);
         var blog = blogRepository.findById(id)
                 .orElseThrow(() -> new BlogNotFoundException(Constants.BLOG_DOES_NOT_EXISTS));
+        System.out.println(blog.getAuthor());
         
         // var isSubscribed = paymentClient.getPaymentStatus(username); 
         // if (isSubscribed) {
         //     return blogMapper.toBlogResponse(blog);
         // }
-        blog.setContent(blog.getContent().substring(100));
+        int endIndex = blog.getContent().length() > 100 ? 100 : blog.getContent().length();
+        blog.setContent(blog.getContent().substring(0, endIndex));
+        System.out.println(blog.getContent());
 
         return blogMapper.toBlogResponse(blog);
     }

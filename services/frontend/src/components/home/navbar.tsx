@@ -23,7 +23,7 @@ export default function Navbar() {
     }
   ];
   return (
-    <div className="mx-auto flex w-full items-center justify-between p-4">
+    <div className="flex w-full items-center justify-between p-4">
       <div className="w-[180px]">
         <Link href="/" className="cursor-pointer">
         <span className="text-2xl font-bold">Blog</span>
