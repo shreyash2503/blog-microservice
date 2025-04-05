@@ -1,6 +1,8 @@
 package com.blog.authentication.user;
 
 import com.blog.authentication.exceptions.UserNotFoundException;
+
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +31,22 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 
         userRepository.save(user);
+    }
+
+    public void updateUser(UserRequest userRequest) {
+        var user = userRepository.findByEmail(userRequest.email()).orElseThrow(() -> new UserNotFoundException("User does not exist"));
+        mergeUser(userRequest, user);
+        userRepository.save(user);
+    }
+
+    public void mergeUser(UserRequest userRequest, User user) {
+        if (StringUtils.isBlank(userRequest.firstname())) {
+            user.setFirstname(userRequest.firstname());
+        }
+
+        if (StringUtils.isBlank(userRequest.lastname())) {
+            user.setLastname(userRequest.lastname());
+        }
     }
 
     public UserResponse getUser(String id) {

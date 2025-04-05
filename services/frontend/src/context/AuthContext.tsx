@@ -43,22 +43,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const loadAuthState = async () => {
       const storedToken = localStorage.getItem("token");
-      console.log(storedToken);
       if (storedToken) {
         const isValid = await validateToken(storedToken);
-        console.log("Isvalid::", isValid)
         if (isValid) {
           try {
             const decoded = JSON.parse(atob(storedToken.split(".")[1]));
+
             console.log("Setting cookie");
             document.cookie = `token=${storedToken}; path=/; max-age=604800; SameSite=Strict; Secure`;
-            setUser({ email: decoded.email });
+            document.cookie = `user=${decoded.sub}; path=/; max-age=604800; SameSite=Strict; Secure`;
+            setUser({ email: decoded.sub });
             setToken(storedToken);
           } catch (e) {
             console.log("Invalid Token");
           }
         } else {
-          console.log("Inside the the else")
           toast({
             title: "Invalid Session!",
             description: "Session no longer valid please login again!"
@@ -83,8 +82,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem("token", response.access_token);
         document.cookie = `token=${response.access_token}; path=/; max-age=604800; SameSite=Strict; Secure`;
         const decoded = JSON.parse(atob(response.access_token.split(".")[1]));
-        console.log("decoded" + decoded);
-        setUser({ email: decoded.email });
+        document.cookie = `user=${decoded.sub}; path=/; max-age=604800; SameSite=Strict; Secure`;
+        setUser({ email: decoded.sub });
         return { success: true };
       }
     } catch (e) {

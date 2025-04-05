@@ -1,7 +1,24 @@
 "use server";
 import { loginSchema, loginType } from "@/schema/login-schema";
-import { redirect } from "next/navigation";
+import { User } from "@/types/user";
+import { cookies } from "next/headers";
 
+
+export async function getUser(): Promise<User> {
+  const email = (await cookies()).get("user")?.value;
+  const token = (await cookies()).get("token")?.value;
+  const response = await fetch(`http://localhost:8090/api/v1/users/${email}`, {
+    "method": "GET",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
+  })
+
+  const json = await response.json();
+  return json;
+
+}
 export async function loginAction(email: string, password: string): Promise<{ errors: string[] } | { access_token: string; refresh_token: string; }> {
   const result = loginSchema.safeParse({ username: email, password });
   if (!result.success) {

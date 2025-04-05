@@ -59,6 +59,8 @@ export default function Navbar() {
               <Link href="https://github.com/shryash2503">Github</Link>
               <Link href="https://github.com/shreyash2503">Github</Link>
               <Link href="https://github.com/shreyash2503">Github</Link>
+              <Link href="/settings">Settings</Link>
+              <Link href="#">Sign out</Link>
             </div>
           </SheetContent>
         </Sheet>

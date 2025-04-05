@@ -34,6 +34,7 @@ public class User implements UserDetails {
     @Indexed(unique = true)
     private String email;
     private String password;
+    private String imageUrl;
     private Role role;
 
     @CreatedDate

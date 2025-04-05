@@ -25,4 +25,12 @@ public class UserController {
     public ResponseEntity<UserResponse> getUser(@PathVariable(name = "id") String id) {
         return ResponseEntity.ok(userService.getUser(id));
     }
+
+    @PatchMapping
+    public ResponseEntity<Void> updateUser(@RequestBody UserRequest userRequest) {
+        //! TODO: Check if the user is changing only his data
+        userService.updateUser(userRequest);
+        return ResponseEntity.ok().build();
+
+    }
 }

@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -12,26 +12,26 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { useAuth } from "@/hooks/use-auth"
-import { redirect } from "next/navigation"
-
+} from "@/components/ui/popover";
+import { useAuth } from "@/hooks/use-auth";
+import { redirect, useRouter } from "next/navigation";
 
 interface Options {
   value: string;
   label: string;
 }
 
-export function Combobox({options} : {options: Options[]}) {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+export function Combobox({ options }: { options: Options[] }) {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   const { logout, token } = useAuth();
+  const router = useRouter();
 
   async function handleLogout() {
     const response = await logout(token as string);
@@ -59,10 +59,12 @@ export function Combobox({options} : {options: Options[]}) {
                   key={option.value}
                   value={option.value}
                   onSelect={async (currentValue) => {
-                    setOpen(false)
+                    setOpen(false);
                     if (currentValue === "sign-out") {
-                        console.log("Hello")
-                        await handleLogout();
+                      await handleLogout();
+                    }
+                    if (currentValue === "settings") {
+                      router.push("/settings");
                     }
                   }}
                 >
@@ -80,5 +82,5 @@ export function Combobox({options} : {options: Options[]}) {
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
