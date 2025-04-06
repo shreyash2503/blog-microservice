@@ -12,6 +12,7 @@ export default async function Settings() {
 
             <Divider text="User settings" />
             <UserSettings firstname={response.firstname} lastname={response.lastname} email={response.username} />
+            <Divider text="Buy Subscription" />
             
         </div>
         </>

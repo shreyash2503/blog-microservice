@@ -3,6 +3,18 @@ import { loginSchema, loginType } from "@/schema/login-schema";
 import { User } from "@/types/user";
 import { cookies } from "next/headers";
 
+export async function updateUser(prevState: any, formData: FormData) {
+  console.log(prevState)
+  const body = {
+    firstname: formData.get("firstname"),
+    lastname: formData.get("lastname")
+  }
+  console.log(formData)
+
+  return {message: ""}
+
+}
+
 
 export async function getUser(): Promise<User> {
   const email = (await cookies()).get("user")?.value;
