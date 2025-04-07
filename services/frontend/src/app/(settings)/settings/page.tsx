@@ -11,7 +11,7 @@ export default async function Settings() {
         <div className="flex flex-col items-center justify-center">
 
             <Divider text="User settings" />
-            <UserSettings firstname={response.firstname} lastname={response.lastname} email={response.username} />
+            <UserSettings firstname={response.firstname} lastname={response.lastname} email={response.username} imageUrl={response.imageUrl} />
             <Divider text="Buy Subscription" />
             
         </div>

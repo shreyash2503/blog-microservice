@@ -1,11 +1,12 @@
 "use client";
-import React, { useActionState, useRef, useState } from "react";
+import React, { useActionState, useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { updateUser } from "@/actions/login-action";
 import { useToast } from "@/hooks/use-toast";
+import { Calendar } from "@/components/ui/calendar";
 
 interface UserSettingsProps {
   imageUrl?: string;
@@ -29,6 +30,9 @@ export function UserSettings({
 
   const [details, setDetails] = useState(initialState);
   const [disable, setDisabled] = useState<boolean>(true);
+  const [profileChange, setProfileChange] = useState(false);
+    const [date, setDate] = useState<Date | undefined>(new Date())
+
 
   const ref = useRef<HTMLInputElement>(null);
 
@@ -60,11 +64,13 @@ export function UserSettings({
     const file = e.target?.files![0];
     if (file && file.type.startsWith("image/")) {
       const imageUrl = URL.createObjectURL(file);
+      console.log(imageUrl);
       setDetails((prev) => ({
         ...prev,
         imageUrl,
       }));
       setDisabled(false);
+      setProfileChange(true);
     } else {
       toast({
         title: "Not a valid file type",
@@ -73,7 +79,17 @@ export function UserSettings({
     }
   };
 
-  const [state, formAction] = useActionState(updateUser, { message: "" });
+  const [state, formAction] = useActionState(updateUser.bind(null, initialState, profileChange), { message: "" });
+
+  useEffect(() => {
+    if (state.message !== "") {
+      toast({
+        title: "User details updation message",
+        description: state.message
+      });
+      setDisabled(true);
+    }
+  }, [state.message, toast]);
 
   return (
     <>
@@ -97,15 +113,10 @@ export function UserSettings({
               />
               <input
                 className="hidden"
+                name="imageUrl"
                 type="file"
                 ref={ref}
                 onChange={handleProfilePhotoChange}
-              />
-              <input
-                className="hidden"
-                value={details.imageUrl}
-                readOnly
-                name="image-url"
               />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
@@ -150,18 +161,16 @@ export function UserSettings({
           </div>
 
           <div className="flex flex-col gap-2 w-full mt-4 md:mt-0">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              className="w-full"
-              name="password"
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              disabled
-            />
+            <Label htmlFor="dob">Date of Birth</Label>
+            <Calendar
+              mode="mulitple"
+              selected={date}
+              onSelect={setDate}
+              className="rounded-md border shadow p-4"
+             />
+
           </div>
         </div>
-
         {/* <div className="w-full px-4 md:w-4/5 lg:w-3/4 mt-6">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="change-password">
