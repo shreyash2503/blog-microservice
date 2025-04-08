@@ -7,12 +7,15 @@ import { Button } from "../ui/button";
 import { updateUser } from "@/actions/login-action";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar } from "@/components/ui/calendar";
+import DatePicker from "../ui/date-picker";
 
 interface UserSettingsProps {
   imageUrl?: string;
   firstname: string;
   lastname: string;
   email: string;
+  dob: Date;
+  gender: string;
 }
 
 export function UserSettings({
@@ -20,19 +23,22 @@ export function UserSettings({
   firstname,
   lastname,
   email,
+  dob,
+  gender
 }: UserSettingsProps) {
   const initialState = {
     firstname,
     lastname,
     email,
     imageUrl,
+    dob,
+    gender
   };
 
   const [details, setDetails] = useState(initialState);
   const [disable, setDisabled] = useState<boolean>(true);
   const [profileChange, setProfileChange] = useState(false);
-    const [date, setDate] = useState<Date | undefined>(new Date())
-
+  const [date, setDate] = useState<Date | undefined>(dob);
 
   const ref = useRef<HTMLInputElement>(null);
 
@@ -60,6 +66,7 @@ export function UserSettings({
     }
   };
 
+
   const handleProfilePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files![0];
     if (file && file.type.startsWith("image/")) {
@@ -79,13 +86,25 @@ export function UserSettings({
     }
   };
 
-  const [state, formAction] = useActionState(updateUser.bind(null, initialState, profileChange), { message: "" });
+  const handleOnDayClick = (d: Date) => {
+    if (d === initialState.dob) {
+      console.log()
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }
+
+  const [state, formAction] = useActionState(
+    updateUser.bind(null, initialState, profileChange),
+    { message: "" }
+  );
 
   useEffect(() => {
     if (state.message !== "") {
       toast({
         title: "User details updation message",
-        description: state.message
+        description: state.message,
       });
       setDisabled(true);
     }
@@ -162,12 +181,14 @@ export function UserSettings({
 
           <div className="flex flex-col gap-2 w-full mt-4 md:mt-0">
             <Label htmlFor="dob">Date of Birth</Label>
-            <Calendar
-              mode="mulitple"
-              selected={date}
-              onSelect={setDate}
-              className="rounded-md border shadow p-4"
-             />
+            <DatePicker date={date} setDate={setDate} onDayClick={handleOnDayClick} />
+            <input className="hidden" readOnly value={String(dob)} />
+          </div>
+
+          <div className="flex flex-col gap-2 w-full">
+            <Label htmlFor="gender">Gender</Label>
+            <Input />
+
 
           </div>
         </div>
