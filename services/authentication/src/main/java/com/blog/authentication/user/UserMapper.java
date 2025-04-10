@@ -8,7 +8,8 @@ public class UserMapper {
         return new UserResponse(
                 user.getEmail(),
                 user.getFirstname(),
-                user.getLastname()
+                user.getLastname(),
+                user.getImageUrl()
         );
     }
 

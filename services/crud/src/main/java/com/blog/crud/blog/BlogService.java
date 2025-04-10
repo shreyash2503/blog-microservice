@@ -30,9 +30,7 @@ public class BlogService {
     public BlogResponse getBlog(String encodedId, String username) {
         // Add logic to check if the blog that is being fetched is under subscription or not 
         encodedId = URLDecoder.decode(encodedId, StandardCharsets.UTF_8);
-        System.out.println(encodedId);
         var id = encryptor.decodeId(encodedId);
-        System.out.println(id);
         var blog = blogRepository.findById(id)
                 .orElseThrow(() -> new BlogNotFoundException(Constants.BLOG_DOES_NOT_EXISTS));
         System.out.println(blog.getAuthor());

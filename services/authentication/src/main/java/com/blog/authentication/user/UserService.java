@@ -40,12 +40,16 @@ public class UserService {
     }
 
     public void mergeUser(UserRequest userRequest, User user) {
-        if (StringUtils.isBlank(userRequest.firstname())) {
-            user.setFirstname(userRequest.firstname());
+        if (!StringUtils.isBlank(userRequest.firstname())) {
+            user.setFirstname(userRequest.firstname().trim());
         }
 
-        if (StringUtils.isBlank(userRequest.lastname())) {
-            user.setLastname(userRequest.lastname());
+        if (!StringUtils.isBlank(userRequest.lastname())) {
+            user.setLastname(userRequest.lastname().trim());
+        }
+        if (!StringUtils.isBlank(userRequest.imageUrl())) {
+            user.setImageUrl(userRequest.imageUrl().trim());
+
         }
     }
 

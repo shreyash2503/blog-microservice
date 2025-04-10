@@ -192,55 +192,6 @@ export function UserSettings({
 
           </div>
         </div>
-        {/* <div className="w-full px-4 md:w-4/5 lg:w-3/4 mt-6">
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="change-password">
-            <AccordionTrigger className="text-sm font-medium border rounded-md p-2">
-              Change Password
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-col gap-4 py-2">
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="currentPassword">Current Password</Label>
-                  <Input
-                    className="w-full"
-                    name="currentPassword"
-                    id="currentPassword"
-                    type="password"
-                    value={passwordFields.currentPassword}
-                    onChange={handlePasswordChange}
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="newPassword">New Password</Label>
-                  <Input
-                    className="w-full"
-                    name="newPassword"
-                    id="newPassword"
-                    type="password"
-                    value={passwordFields.newPassword}
-                    onChange={handlePasswordChange}
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                  <Input
-                    className={`w-full ${passwordError ? 'border-red-500' : ''}`}
-                    name="confirmPassword"
-                    id="confirmPassword"
-                    type="password"
-                    value={passwordFields.confirmPassword}
-                    onChange={handlePasswordChange}
-                  />
-                  {passwordError && (
-                    <p className="text-red-500 text-sm mt-1">Passwords do not match</p>
-                  )}
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div> */}
 
         <div className="w-full px-4 md:w-4/5 lg:w-3/4 flex justify-end m-5">
           <Button disabled={disable} type="submit">
